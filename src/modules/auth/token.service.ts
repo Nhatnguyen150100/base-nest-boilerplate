@@ -15,7 +15,7 @@ export class TokenService {
     return this.jwtService.sign(payload);
   }
 
-  verifyToken(token: string): Pick<User, 'email' | 'id' | 'role'> {
+  verifyToken(token: string): Pick<User, 'email' | 'id' | 'role'> | null {
     try {
       const payload = this.jwtService.verify(token);
       return payload;

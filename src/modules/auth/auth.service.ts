@@ -40,7 +40,7 @@ export class AuthService {
           message: 'User registered successfully',
         }),
       );
-    } catch (error) {
+    } catch (error: any) {
       Logger.error(error.message);
       return Promise.reject(
         new BaseErrorResponse({
@@ -86,7 +86,14 @@ export class AuthService {
           message: 'User logged in successfully',
         }),
       );
-    } catch (error) {}
+    } catch (error: any) {
+      Logger.error(error.message);
+      return Promise.reject(
+        new BaseErrorResponse({
+          message: error.message,
+        }),
+      );
+    }
   }
 
   private async comparePassword(password: string, hashPassword: string) {

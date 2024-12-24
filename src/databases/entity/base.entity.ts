@@ -4,13 +4,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export class BaseEntity {
+export abstract class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id?: string;
 
   @CreateDateColumn({ type: 'timestamp' })
-  readonly createdAt!: Date;
+  readonly createdAt?: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  readonly updatedAt!: Date;
+  readonly updatedAt?: Date;
 }
