@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TokenService } from './token.service';
+import { TokenService } from '../../shared/services/token.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -34,6 +34,7 @@ export class AuthService {
 
       const newUserObj = this.userRepository.create(userDto);
       await this.userRepository.save(newUserObj);
+      delete newUserObj.password;
       return Promise.resolve(
         new BaseSuccessResponse({
           data: newUserObj,

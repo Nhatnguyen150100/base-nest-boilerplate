@@ -3,7 +3,6 @@ import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
 import { UserRole } from '../../../constants/role';
 import { BaseEntity } from '../../../databases/entity/base.entity';
-import { Exclude } from 'class-transformer';
 
 @Entity('users')
 @Unique(['email'])
@@ -14,15 +13,14 @@ export class User extends BaseEntity {
   @IsString()
   fullName: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column()
   @IsString()
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  @Column({ select: false })
+  @Column()
   @IsString()
-  @Exclude()
   @IsNotEmpty()
   password: string;
 
