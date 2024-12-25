@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
+import { StringFieldOptional } from '../../../decorators/field.decorators';
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto {
+  @StringFieldOptional({
+    example: 'user full name',
+    description: 'Full name of the user',
+  })
+  fullName: string;
+}
