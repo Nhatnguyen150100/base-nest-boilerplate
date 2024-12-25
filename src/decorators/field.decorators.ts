@@ -1,10 +1,27 @@
-import { ApiProperty, ApiPropertyOptions } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsBoolean, IsEmail, IsEnum, IsString, MaxLength, MinLength, NotEquals, ValidateIf, ValidationOptions } from "class-validator";
-import { ToArray, ToBoolean, ToLowerCase, ToUpperCase } from "./transform.decorators";
-import { applyDecorators } from "@nestjs/common";
-import { IsPassword, IsUndefinable } from "./validator.decorators";
-import { ApiEnumProperty } from "./property.decorators";
+import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import {
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsInt,
+  IsNumber,
+  IsString,
+  MaxLength,
+  MinLength,
+  NotEquals,
+  ValidateIf,
+  ValidationOptions,
+} from 'class-validator';
+import {
+  ToArray,
+  ToBoolean,
+  ToLowerCase,
+  ToUpperCase,
+} from './transform.decorators';
+import { applyDecorators } from '@nestjs/common';
+import { IsPassword, IsUndefinable } from './validator.decorators';
+import { ApiEnumProperty } from './property.decorators';
 
 interface IFieldOptions {
   each?: boolean;
@@ -20,9 +37,14 @@ interface IStringFieldOptions extends IFieldOptions {
   toUpperCase?: boolean;
 }
 
-
 type IBooleanFieldOptions = IFieldOptions;
 type IEnumFieldOptions = IFieldOptions;
+interface INumberFieldOptions extends IFieldOptions {
+  min?: number;
+  max?: number;
+  int?: boolean;
+  isPositive?: boolean;
+}
 
 export function IsNullable(options?: ValidationOptions): PropertyDecorator {
   return ValidateIf((_obj, value) => value !== null, options);
@@ -41,7 +63,11 @@ export function StringField(
 
   if (options.swagger !== false) {
     decorators.push(
-      ApiProperty({ type: String, ...options, isArray: options.each } as ApiPropertyOptions),
+      ApiProperty({
+        type: String,
+        ...options,
+        isArray: options.each,
+      } as ApiPropertyOptions),
     );
   }
 
@@ -79,7 +105,9 @@ export function EmailField(
   }
 
   if (options.swagger !== false) {
-    decorators.push(ApiProperty({ type: String, ...options } as ApiPropertyOptions));
+    decorators.push(
+      ApiProperty({ type: String, ...options } as ApiPropertyOptions),
+    );
   }
 
   return applyDecorators(...decorators);
@@ -132,7 +160,9 @@ export function BooleanField(
   }
 
   if (options.swagger !== false) {
-    decorators.push(ApiProperty({ type: Boolean, ...options } as ApiPropertyOptions));
+    decorators.push(
+      ApiProperty({ type: Boolean, ...options } as ApiPropertyOptions),
+    );
   }
 
   return applyDecorators(...decorators);
@@ -186,3 +216,53 @@ export function EnumFieldOptional<TEnum extends object>(
     EnumField(getEnum, { required: false, ...options }),
   );
 }
+
+// export function NumberField(
+//   options: Omit<ApiPropertyOptions, 'type'> & INumberFieldOptions = {},
+// ): PropertyDecorator {
+//   const decorators = [Type(() => Number)];
+
+//   if (options.nullable) {
+//     decorators.push(IsNullable({ each: options.each }));
+//   } else {
+//     decorators.push(NotEquals(null, { each: options.each }));
+//   }
+
+//   if (options.swagger !== false) {
+//     decorators.push(ApiProperty({ type: Number, ...options }) as ApiPropertyOptions);
+//   }
+
+//   if (options.each) {
+//     decorators.push(ToArray());
+//   }
+
+//   if (options.int) {
+//     decorators.push(IsInt({ each: options.each }));
+//   } else {
+//     decorators.push(IsNumber({}, { each: options.each }));
+//   }
+
+//   if (typeof options.min === 'number') {
+//     decorators.push(Min(options.min, { each: options.each }));
+//   }
+
+//   if (typeof options.max === 'number') {
+//     decorators.push(Max(options.max, { each: options.each }));
+//   }
+
+//   if (options.isPositive) {
+//     decorators.push(IsPositive({ each: options.each }));
+//   }
+
+//   return applyDecorators(...decorators);
+// }
+
+// export function NumberFieldOptional(
+//   options: Omit<ApiPropertyOptions, 'type' | 'required'> &
+//     INumberFieldOptions = {},
+// ): PropertyDecorator {
+//   return applyDecorators(
+//     IsUndefinable(),
+//     NumberField({ required: false, ...options }),
+//   );
+// }
