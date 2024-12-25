@@ -28,7 +28,13 @@ export class AppConfig {
   get appConfig() {
     return {
       port: this.getString('PORT'),
+      serverUrl: this.getString('BASE_SERVER_URL'),
+      clientUrl: this.getString('BASE_CLIENT_URL'),
     };
+  }
+
+  get documentationEnabled(): boolean {
+    return this.getBoolean('ENABLE_DOCUMENTATION');
   }
 
   get authConfig() {

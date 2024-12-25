@@ -1,7 +1,5 @@
 import { AppConfig } from './config/app.config';
 import { DynamicModule, Module, Provider } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -30,7 +28,5 @@ const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
 
 @Module({
   imports: [AuthModule, SharedModule, ...coreModule],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
