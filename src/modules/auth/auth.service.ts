@@ -78,6 +78,7 @@ export class AuthService {
       }
 
       const accessToken = this.tokenService.generateToken(userExit);
+      delete userExit.password;
       return Promise.resolve(
         new BaseSuccessResponse({
           data: {

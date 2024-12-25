@@ -12,7 +12,6 @@ export class TokenService {
       email: user.email,
       role: user.role,
     };
-    console.log("🚀 ~ TokenService ~ generateToken ~ payload:", payload)
     return this.jwtService.sign(payload);
   }
 

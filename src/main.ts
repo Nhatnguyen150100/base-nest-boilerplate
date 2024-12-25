@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { SharedModule } from './shared/module/shared.module';
 import { AppConfig } from './config/app.config';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -27,6 +27,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     exposedHeaders: ['X-Total-Count', 'token'],
   });
   app.setGlobalPrefix('api/v1');
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   const configService = app.select(SharedModule).get(AppConfig);
   await app.listen(configService.appConfig.port);
   Logger.log(`Server running on ${await app.getUrl()}`, 'NestApplication');

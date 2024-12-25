@@ -1,8 +1,8 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
 import { UserRole } from '../../../constants/role';
 import { BaseEntity } from '../../../databases/entity/base.entity';
+import { EmailField, EnumField, PasswordField, StringField } from '../../../decorators/field.decorators';
 
 @Entity('users')
 @Unique(['email'])
@@ -10,18 +10,17 @@ export class User extends BaseEntity {
   @Column({
     nullable: true,
   })
-  @IsString()
+  @StringField()
   fullName: string;
 
   @Column()
-  @IsString()
-  @IsEmail()
-  @IsNotEmpty()
+  @EmailField()
   email: string;
 
   @Column()
-  @IsString()
-  @IsNotEmpty()
+  @PasswordField({
+    description: 'Password must contain at least 8 characters and should not contain any special characters.',
+  })
   password: string;
 
   @Column({
@@ -29,7 +28,7 @@ export class User extends BaseEntity {
     enum: UserRole,
     default: UserRole.USER,
   })
-  @IsEnum(UserRole)
+  @EnumField(() => UserRole)
   role: UserRole;
 
   @BeforeInsert()

@@ -35,7 +35,7 @@ export class AppConfig {
     return {
       privateKey: this.getString('JWT_PRIVATE_KEY'),
       publicKey: this.getString('JWT_PUBLIC_KEY'),
-      jwtExpirationTime: this.getNumber('JWT_EXPIRATION_TIME'),
+      jwtExpirationTime: this.getString('JWT_EXPIRATION_TIME'),
     };
   }
 
@@ -103,7 +103,7 @@ export class AppConfig {
     const value = this.configService.get<string>(key);
 
     if (value == null) {
-      throw new Error(key + ' environment variable does not set'); // probably we should call process.exit() too to avoid locking the service
+      throw new Error(key + ' environment variable does not set');
     }
 
     return value;

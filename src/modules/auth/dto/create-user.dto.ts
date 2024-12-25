@@ -1,11 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { EmailField, PasswordField } from '../../../decorators/field.decorators';
 
 export class CreateUserDto {
-  @IsNotEmpty()
-  @IsEmail()
+  @EmailField()
   readonly email: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @PasswordField({
+    description: 'Password must contain at least 8 characters and should not contain any special characters.',
+  })
   readonly password: string;
 }
