@@ -1,5 +1,6 @@
 import { Logger, type INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DEFINE_TAGS } from './constants/tags-swagger';
 
 export function setupSwagger(app: INestApplication, port: string): void {
   const documentBuilder = new DocumentBuilder()
@@ -49,6 +50,10 @@ Routes is following REST standard
 </details>`,
     )
     .addBearerAuth();
+
+  DEFINE_TAGS.forEach((tag) => {
+    documentBuilder.addTag(tag.name, tag.description);
+  });
 
   if (process.env.API_VERSION) {
     documentBuilder.setVersion(process.env.API_VERSION);

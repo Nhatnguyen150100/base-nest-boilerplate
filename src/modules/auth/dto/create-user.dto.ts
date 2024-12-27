@@ -1,8 +1,10 @@
 import { EmailField, PasswordField } from '../../../decorators/field.decorators';
 
 export class CreateUserDto {
+
   @EmailField({
-    example: 'user1@gmail.com'
+    example: 'user1@gmail.com',
+    description: 'Unique email address',
   })
   readonly email: string;
 

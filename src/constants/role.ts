@@ -3,6 +3,4 @@ enum UserRole {
   USER = 'USER',
 }
 
-const IS_PUBLIC_ROUTE = 'isPublicRoute';
-
-export { UserRole, IS_PUBLIC_ROUTE };
+export { UserRole };

@@ -43,9 +43,9 @@ export class BaseResponseList<TList> extends BaseResponse<{
 }
 
 export class BaseErrorResponse extends BaseResponse<null> {
-  constructor({ message }: { message: string }) {
+  constructor({ message, statusCode }: { message: string, statusCode?: number }) {
     super({
-      statusCode: DEFINE_STATUS_RESPONSE.BAD_REQUEST.statusCode,
+      statusCode: statusCode ?? DEFINE_STATUS_RESPONSE.BAD_REQUEST.statusCode,
       message: message ?? DEFINE_STATUS_RESPONSE.BAD_REQUEST.message,
     });
   }

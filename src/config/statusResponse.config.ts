@@ -7,6 +7,10 @@ const DEFINE_STATUS_RESPONSE = {
     statusCode: 400,
     message: 'Bad Request',
   },
+  NOT_FOUND: {
+    statusCode: 404,
+    message: 'Not Found',
+  }
 };
 
 export { DEFINE_STATUS_RESPONSE };

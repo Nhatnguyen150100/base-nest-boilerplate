@@ -8,11 +8,15 @@ import helmet from 'helmet';
 import * as compression from 'compression';
 import morgan = require('morgan');
 import { setupSwagger } from './setup-swagger';
+import { BadRequestExceptionFilter } from './filters/bad-request.filter';
 
 export async function bootstrap(): Promise<NestExpressApplication> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
   });
+  app.useGlobalFilters(
+    new BadRequestExceptionFilter(),
+  );
   app.enable('trust proxy');
   app.use(helmet());
   app.use(compression());

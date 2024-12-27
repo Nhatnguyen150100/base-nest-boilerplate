@@ -7,6 +7,7 @@ interface IProps {
   path: string;
   isPrivateRoute?: boolean;
   summary?: string;
+  tags: string[];
   description?: string;
   responses?: { status: number; description: string }[];
 }
@@ -16,12 +17,14 @@ export function ApiHttpOperation({
   path,
   isPrivateRoute = true,
   summary,
+  tags,
   description,
   responses = [],
 }: IProps) {
   const defaultResponses = [
-    { status: 200, description: 'Thành công.' },
-    { status: 400, description: 'Yêu cầu không hợp lệ.' },
+    { status: 200, description: 'Request is successfully' },
+    { status: 400, description: 'Request is failed' },
+    { status: 500, description: 'Server error' },
   ];
 
   const allResponses = [...defaultResponses, ...responses];
@@ -42,7 +45,7 @@ export function ApiHttpOperation({
 
   const allDecorators = [
     methodDecorator(),
-    ApiOperation({ summary, description }),
+    ApiOperation({ summary, description, tags }),
     apiBearerAuth,
     ...allResponses.map((response) =>
       ApiResponse({
