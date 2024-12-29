@@ -45,7 +45,7 @@ export class AppConfig {
     };
   }
 
-  get typeOrmConfig (): TypeOrmModuleOptions  {
+  get typeOrmConfig(): TypeOrmModuleOptions {
     return this.get('typeormConfig') as TypeOrmModuleOptions;
   }
 
@@ -54,7 +54,7 @@ export class AppConfig {
       join(__dirname, '../modules/**/*.entity{.ts,.js}'),
       join(__dirname, '../modules/**/*.view-entity{.ts,.js}'),
     ];
-    const migrations = [join(__dirname, '../databases/migrations/*{.ts,.js}')];
+    const migrations = [join(__dirname, '../database/migrations/*{.ts,.js}')];
 
     const _config: DataSourceOptions = {
       entities,

@@ -9,10 +9,9 @@ dotenv.config();
 const config = new AppConfig(new ConfigService()).typeOrmConfigDataSource;
 
 export default registerAs('typeormConfig', () => config);
-export const connectionSource = new DataSource(config as DataSourceOptions);
+export const AppDataSource = new DataSource(config as DataSourceOptions);
 
-connectionSource
-  .initialize()
+AppDataSource.initialize()
   .then(() => {
     Logger.log('Data Source has been initialized!', 'DataSource');
   })

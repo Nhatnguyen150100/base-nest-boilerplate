@@ -1,8 +1,13 @@
 import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
 import { UserRole } from '../../../constants/role';
-import { BaseEntity } from '../../../databases/entity/base.entity';
-import { EmailField, EnumField, PasswordField, StringField } from '../../../decorators/field.decorators';
+import { BaseEntity } from '../../../database/entity/base.entity';
+import {
+  EmailField,
+  EnumField,
+  PasswordField,
+  StringField,
+} from '../../../decorators/field.decorators';
 
 @Entity('users')
 @Unique(['email'])
@@ -19,7 +24,8 @@ export class User extends BaseEntity {
 
   @Column()
   @PasswordField({
-    description: 'Password must contain at least 8 characters and should not contain any special characters.',
+    description:
+      'Password must contain at least 8 characters and should not contain any special characters.',
   })
   password: string;
 
