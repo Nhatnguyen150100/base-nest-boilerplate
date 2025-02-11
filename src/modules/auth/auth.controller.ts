@@ -38,11 +38,4 @@ export class AuthController {
   async register(@Body() userDto: CreateUserDto) {
     return await this.authService.register(userDto);
   }
-
-  @Get('error')
-  async throwError() {
-    throw new BadRequestException(
-      new BaseErrorResponse({ message: 'Password incorrect' }),
-    );
-  }
 }
