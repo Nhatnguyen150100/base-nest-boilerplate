@@ -10,7 +10,8 @@ export class CreateUserTable1678901234567 implements MigrationInterface {
           columns: [
             {
               name: 'id',
-              type: 'uuid',
+              type: 'char',
+              length: '36',
               isPrimary: true,
               isGenerated: true,
               generationStrategy: 'uuid',
