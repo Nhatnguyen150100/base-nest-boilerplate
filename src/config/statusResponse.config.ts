@@ -10,6 +10,10 @@ const DEFINE_STATUS_RESPONSE = {
   NOT_FOUND: {
     statusCode: 404,
     message: 'Not Found',
+  },
+  ERROR_SERVER: {
+    statusCode: 500,
+    message: 'Internal Server Error',
   }
 };
 
