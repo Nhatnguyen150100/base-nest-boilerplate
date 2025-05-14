@@ -10,6 +10,10 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/authGuard';
 import { RoleGuard } from './guards/rolesGuard';
 import { BadRequestExceptionFilter } from './filters/bad-request.filter';
+import { UnauthorizedExceptionFilter } from './filters/unauthorized.filter';
+import { UploadModule } from './modules/upload/upload.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
@@ -17,18 +21,23 @@ const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
     isGlobal: true,
     load: [typeormConfig],
   }),
+  ServeStaticModule.forRoot({
+    rootPath: join(__dirname, '..', 'uploads'),
+    serveRoot: '/images',
+  }),
+];
+
+const databaseModule: DynamicModule | Promise<DynamicModule> =
   TypeOrmModule.forRootAsync({
-    inject: [ConfigService],
-    useFactory: (configService: ConfigService) => {
-      const appConfig = new AppConfig(configService);
+    inject: [AppConfig],
+    useFactory: (appConfig: AppConfig) => {
       const config = appConfig.typeOrmConfig;
       if (!config) {
         throw new Error('TypeORM configuration is not defined');
       }
       return config;
     },
-  }),
-];
+  });
 
 @Module({
   providers: [
@@ -38,13 +47,23 @@ const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
     },
     {
       provide: APP_GUARD,
-      useClass: RoleGuard
+      useClass: RoleGuard,
     },
     {
       provide: APP_FILTER,
       useClass: BadRequestExceptionFilter,
     },
+    {
+      provide: APP_FILTER,
+      useClass: UnauthorizedExceptionFilter,
+    },
   ],
-  imports: [AuthModule, SharedModule, ...coreModule],
+  imports: [
+    ...coreModule,
+    databaseModule,
+    SharedModule,
+    AuthModule,
+    UploadModule,
+  ],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
-import { Module, DynamicModule, Logger } from '@nestjs/common';
+import { Module, DynamicModule } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { AppConfig } from '../../config/app.config';
 
 @Module({
@@ -13,20 +13,18 @@ export class MyJwtModule {
       imports: [
         JwtModule.registerAsync({
           imports: [ConfigModule],
-          useFactory: async (configService: ConfigService) => {
-            const appConfig = new AppConfig(configService);
-            return {
-              privateKey: appConfig.authConfig.privateKey,
-              publicKey: appConfig.authConfig.publicKey,
-              signOptions: {
-                expiresIn: appConfig.authConfig.jwtExpirationTime,
-                algorithm: 'RS256',
-              },
-            };
-          },
-          inject: [ConfigService],
+          useFactory: async (appConfig: AppConfig) => ({
+            privateKey: appConfig.authConfig.privateKey,
+            publicKey: appConfig.authConfig.publicKey,
+            signOptions: {
+              expiresIn: appConfig.authConfig.jwtExpirationTime,
+              algorithm: 'RS256',
+            },
+          }),
+          inject: [AppConfig],
         }),
       ],
+      providers: [AppConfig],
       exports: [JwtModule],
     };
   }

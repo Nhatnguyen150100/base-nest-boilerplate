@@ -15,9 +15,16 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
-    const objError = exception.getResponse() as BaseErrorResponse;
-    Logger.error(`Caught BadRequestException: ${objError.message}`);
+    const exceptionResponseMessage = exception.getResponse() as string;
+    Logger.error(
+      `Caught BadRequestException: ${exceptionResponseMessage}`,
+      'BadRequestException',
+    );
 
-    response.status(status).json(objError);
+    const errorObj = new BaseErrorResponse({
+      message: exceptionResponseMessage,
+    });
+
+    response.status(status).json({ ...errorObj });
   }
 }

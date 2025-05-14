@@ -5,12 +5,12 @@ import { MyJwtModule } from './jwt.module';
 import { AppConfig } from '../../config/app.config';
 import { TokenService } from '../services/token.service';
 
-const providers: Provider[] = [AppConfig, MyJwtModule, TokenService];
+const providers: Provider[] = [AppConfig, TokenService];
 
 @Global()
 @Module({
-  providers,
   imports: [CqrsModule, MyJwtModule.register()],
+  providers,
   exports: [...providers, CqrsModule],
 })
 export class SharedModule {}
