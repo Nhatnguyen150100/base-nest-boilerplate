@@ -20,7 +20,7 @@ import { UnauthorizedExceptionFilter } from './filters/unauthorized.filter';
 import { UploadModule } from './modules/upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { CsrfMiddleware } from './middleware/csrf.middleware';
+import { CsrfMiddleware } from './middlewares/csrf.middleware';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
