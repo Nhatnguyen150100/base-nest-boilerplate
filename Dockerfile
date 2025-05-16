@@ -1,32 +1,34 @@
-FROM node:lts AS dist
-COPY package.json pnpm-lock.yaml ./
+# -------- STAGE 1: Base with pnpm installed ----------
+FROM node:lts-alpine AS base
+WORKDIR /app
+RUN npm install -g pnpm@latest
+RUN npm install -g husky@latest
 
+# -------- STAGE 2: Build the app ---------------------
+FROM base AS build
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
+COPY . .
+RUN pnpm build
 
-COPY . ./
-
-RUN pnpm build:prod
-
-FROM node:lts AS node_modules
+# -------- STAGE 3: Production-only dependencies ------
+FROM base AS prod_deps
 COPY package.json pnpm-lock.yaml ./
-
 RUN pnpm install --prod
 
-FROM node:lts
+# -------- STAGE 4: Runtime image ---------------------
+FROM node:lts-alpine AS runner
 
 ARG PORT=8080
-
+ENV PORT=$PORT
 ENV NODE_ENV=production
 
-RUN mkdir -p /usr/src/app
+COPY --from=build /app/build ./build
+COPY --from=prod_deps /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
-WORKDIR /usr/src/app
-
-COPY --from=dist dist /usr/src/app/dist
-COPY --from=node_modules node_modules /usr/src/app/node_modules
-
-COPY . /usr/src/app
 
 EXPOSE $PORT
 
-CMD [ "pnpm run start" ]
+CMD ["node", "build/src/main"]
