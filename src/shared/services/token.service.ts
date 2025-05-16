@@ -20,7 +20,7 @@ export class TokenService {
     try {
       const payload = this.jwtService.verify(token);
       return payload;
-    } catch (error) {
+    } catch (error: any) {
       return null;
     }
   }

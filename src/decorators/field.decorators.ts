@@ -186,7 +186,6 @@ export function EnumField<TEnum extends object>(
   options: Omit<ApiPropertyOptions, 'type' | 'enum' | 'enumName' | 'isArray'> &
     IEnumFieldOptions = {},
 ): PropertyDecorator {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const enumValue = getEnum();
   const decorators = [IsEnum(enumValue, { each: options.each })];
 

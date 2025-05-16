@@ -10,7 +10,7 @@ import { UploadService } from './upload.service';
 import { Roles } from '../../decorators/roles.decorators';
 import { UserRole } from '../../constants/role';
 import { diskStorage } from 'multer';
-import path = require('path');
+import * as path from 'path';
 import { existsSync, mkdirSync } from 'fs';
 
 @Controller('images')
@@ -24,7 +24,9 @@ export class UploadController {
       storage: diskStorage({
         destination: (_, __, cb) => {
           const dir = path.join(__dirname, '..', '..', '..', 'uploads');
-          existsSync(dir) || mkdirSync(dir, { recursive: true });
+          if (!existsSync(dir)) {
+            mkdirSync(dir, { recursive: true });
+          }
           cb(null, dir);
         },
         filename: (_, file, cb) => {

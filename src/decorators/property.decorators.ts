@@ -37,7 +37,6 @@ export function ApiEnumProperty<TEnum>(
   getEnum: () => TEnum,
   options: Omit<ApiPropertyOptions, 'type'> & { each?: boolean } = {},
 ): PropertyDecorator {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const enumValue = getEnum() as any;
 
   return ApiProperty({

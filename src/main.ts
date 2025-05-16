@@ -11,37 +11,13 @@ import { AppConfig } from './config/app.config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import * as compression from 'compression';
-import morgan = require('morgan');
+import * as morgan from 'morgan';
 import { setupSwagger } from './setup-swagger';
 import { BadRequestExceptionFilter } from './filters/bad-request.filter';
 import { UnauthorizedExceptionFilter } from './filters/unauthorized.filter';
 import { UnprocessableEntityFilter } from './filters/unprocessable-entity.filter';
 import { InternalServerErrorFilter } from './filters/internal-server-error.filter';
 import { join } from 'path';
-import {
-  doubleCsrf,
-  CsrfRequestMethod,
-  DoubleCsrfConfigOptions,
-} from 'csrf-csrf';
-import { Request } from 'express';
-
-const doubleCsrfOptions: DoubleCsrfConfigOptions = {
-  getSecret: (): string => 'your-secret-key',
-  getSessionIdentifier: (req: Request): string => {
-    return req.ip || 'anonymous';
-  },
-  cookieName: 'x-csrf-token',
-  cookieOptions: {
-    sameSite: 'strict',
-    path: '/',
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-  },
-  size: 64,
-  ignoredMethods: ['GET', 'HEAD', 'OPTIONS'] as CsrfRequestMethod[],
-  getCsrfTokenFromRequest: (req: Request): string =>
-    req.headers['x-csrf-token'] as string,
-};
 
 export async function bootstrap(): Promise<NestExpressApplication> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -88,9 +64,6 @@ export async function bootstrap(): Promise<NestExpressApplication> {
       },
     }),
   );
-  const { doubleCsrfProtection, generateCsrfToken } =
-    doubleCsrf(doubleCsrfOptions);
-  app.use(doubleCsrfProtection);
   if (!configService.isDevelopment) {
     app.enableShutdownHooks();
   }

@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { stat, unlink } from 'fs';
-import path = require('path');
+import * as path from 'path';
 import { BaseSuccessResponse } from '../../config/response.config';
 import { AppConfig } from '../../config/app.config';
 

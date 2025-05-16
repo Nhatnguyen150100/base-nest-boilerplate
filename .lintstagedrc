@@ -1,3 +1,6 @@
 {
-  "*.{js,ts,json,md}": ["prettier --write \"src/**/*.ts\" \"test/**/*.ts\""]
+  "*.{js,ts,json,md}": [
+    "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
+  ]
 }
