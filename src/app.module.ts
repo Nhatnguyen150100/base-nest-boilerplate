@@ -1,9 +1,15 @@
 import { AppConfig } from './config/app.config';
-import { DynamicModule, Module } from '@nestjs/common';
+import {
+  DynamicModule,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { SharedModule } from './shared/module/shared.module';
 import typeormConfig from './config/typeorm.config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
@@ -14,6 +20,7 @@ import { UnauthorizedExceptionFilter } from './filters/unauthorized.filter';
 import { UploadModule } from './modules/upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { CsrfMiddleware } from './middleware/csrf.middleware';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
@@ -66,4 +73,10 @@ const databaseModule: DynamicModule | Promise<DynamicModule> =
     UploadModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(CsrfMiddleware)
+      .forRoutes({ path: '/', method: RequestMethod.ALL });
+  }
+}

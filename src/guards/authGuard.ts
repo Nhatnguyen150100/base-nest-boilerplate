@@ -25,8 +25,10 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
     );
 
+    // If the route is public, allow access
     if (isPublic) return true;
 
+    // Check if the request has an authorization header
     const { authorization } = request.headers;
     if (!authorization || authorization.trim() === '') {
       throw new UnauthorizedException('Please provide token');

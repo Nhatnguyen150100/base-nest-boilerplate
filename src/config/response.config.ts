@@ -1,10 +1,13 @@
+import { PageDto } from '../common/dto/page.dto';
+import { PaginationMetaDataDto } from '../common/dto/pagination-metadata.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 import { DEFINE_STATUS_RESPONSE } from './statusResponse.config';
 
 export class BaseResponse<T> {
-  statusCode: number;
-  message: string;
-  timestamp: string;
-  data?: T;
+  public readonly statusCode: number;
+  public readonly message: string;
+  public readonly timestamp: string;
+  public readonly data?: T;
 
   constructor({
     statusCode,
@@ -22,28 +25,39 @@ export class BaseResponse<T> {
   }
 }
 
-export class BaseResponseList<TList> extends BaseResponse<{
-  content: TList[];
-  totalCount: number;
-}> {
+export class BasePageResponse<T> extends BaseResponse<PageDto<T>> {
   constructor({
-    statusCode,
-    list,
-    totalCount,
+    statusCode = DEFINE_STATUS_RESPONSE.SUCCESS.statusCode,
     message,
+    data,
+    paginationDto,
+    totalItem,
   }: {
-    statusCode: number;
-    list: TList[];
-    totalCount: number;
+    statusCode?: number;
     message: string;
+    data: T[];
+    paginationDto: PaginationDto;
+    totalItem: number;
   }) {
-    const data = { content: list, totalCount };
-    super({ statusCode, data, message });
+    const metaData = new PaginationMetaDataDto(totalItem, paginationDto);
+    const pageData = new PageDto(data, metaData);
+
+    super({
+      statusCode,
+      message,
+      data: pageData,
+    });
   }
 }
 
 export class BaseErrorResponse extends BaseResponse<null> {
-  constructor({ message, statusCode }: { message: string, statusCode?: number }) {
+  constructor({
+    message,
+    statusCode,
+  }: {
+    message: string;
+    statusCode?: number;
+  }) {
     super({
       statusCode: statusCode ?? DEFINE_STATUS_RESPONSE.BAD_REQUEST.statusCode,
       message: message ?? DEFINE_STATUS_RESPONSE.BAD_REQUEST.message,
@@ -60,3 +74,4 @@ export class BaseSuccessResponse<T> extends BaseResponse<T> {
     });
   }
 }
+

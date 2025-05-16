@@ -1,3 +1,4 @@
+import { ThrottleModule } from './throttle.module';
 import type { Provider } from '@nestjs/common';
 import { Global, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -9,8 +10,8 @@ const providers: Provider[] = [AppConfig, TokenService];
 
 @Global()
 @Module({
-  imports: [CqrsModule, MyJwtModule.register()],
+  imports: [CqrsModule, MyJwtModule.register(), ThrottleModule.register()],
   providers,
-  exports: [...providers, CqrsModule],
+  exports: [...providers, CqrsModule, ThrottleModule],
 })
 export class SharedModule {}
