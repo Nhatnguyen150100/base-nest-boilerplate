@@ -88,10 +88,8 @@ export async function bootstrap(): Promise<NestExpressApplication> {
       },
     }),
   );
-  const {
-    doubleCsrfProtection,
-    generateCsrfToken
-  } = doubleCsrf(doubleCsrfOptions);
+  const { doubleCsrfProtection, generateCsrfToken } =
+    doubleCsrf(doubleCsrfOptions);
   app.use(doubleCsrfProtection);
   if (!configService.isDevelopment) {
     app.enableShutdownHooks();

@@ -6,9 +6,7 @@ import { AppConfig } from '../../config/app.config';
 
 @Injectable()
 export class UploadService {
-  constructor(
-    private readonly appConfig: AppConfig
-  ) {}
+  constructor(private readonly appConfig: AppConfig) {}
 
   handleFile(file: Express.Multer.File) {
     const imageUrl = `${this.appConfig.appConfig.serverUrl}/${file.filename}`;

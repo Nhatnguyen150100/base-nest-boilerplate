@@ -13,7 +13,10 @@ export class RoleGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.get<UserRole[]>(ROLES_KEY, context.getHandler());
+    const requiredRoles = this.reflector.get<UserRole[]>(
+      ROLES_KEY,
+      context.getHandler(),
+    );
     if (!requiredRoles) {
       return true;
     }
@@ -25,7 +28,8 @@ export class RoleGuard implements CanActivate {
       throw new ForbiddenException('User roles not found');
     }
 
-    const hasRole = () => user.roles.some((role: UserRole) => requiredRoles.includes(role));
+    const hasRole = () =>
+      user.roles.some((role: UserRole) => requiredRoles.includes(role));
     if (!hasRole()) {
       throw new ForbiddenException('User does not have the required role');
     }

@@ -26,6 +26,6 @@ export class InternalServerErrorFilter implements ExceptionFilter {
       statusCode: status,
     });
 
-    response.status(status).json({ ...errorObj, });
+    response.status(status).json({ ...errorObj });
   }
 }

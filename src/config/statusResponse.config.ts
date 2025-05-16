@@ -14,7 +14,7 @@ const DEFINE_STATUS_RESPONSE = {
   ERROR_SERVER: {
     statusCode: 500,
     message: 'Internal Server Error',
-  }
+  },
 };
 
 export { DEFINE_STATUS_RESPONSE };

@@ -21,12 +21,10 @@ export class UnprocessableEntityFilter implements ExceptionFilter {
       'UnprocessableEntityException',
     );
 
-    response
-      .status(status)
-      .json({
-        ...exceptionResponse,
-        statusCode: status,
-        timeStamp: new Date().toISOString(),
-      });
+    response.status(status).json({
+      ...exceptionResponse,
+      statusCode: status,
+      timeStamp: new Date().toISOString(),
+    });
   }
 }

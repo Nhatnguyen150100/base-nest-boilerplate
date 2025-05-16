@@ -69,7 +69,7 @@ export class AuthService {
         new BaseErrorResponse({ message: 'Password incorrect' }),
       );
     }
-  
+
     const accessToken = this.tokenService.generateToken(userExit);
     delete userExit.password;
     return new BaseSuccessResponse({

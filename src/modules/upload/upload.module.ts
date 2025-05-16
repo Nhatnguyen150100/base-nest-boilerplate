@@ -6,11 +6,11 @@ import { UploadController } from './upload.controller';
 @Module({
   imports: [
     MulterModule.register({
-      dest: "../../uploads"
+      dest: '../../uploads',
     }),
   ],
   controllers: [UploadController],
   providers: [UploadService],
-  exports: [UploadService]
+  exports: [UploadService],
 })
 export class UploadModule {}
