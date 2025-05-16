@@ -25,7 +25,7 @@ const doubleCsrfOptions: DoubleCsrfConfigOptions = {
 };
 
 const { doubleCsrfProtection, generateCsrfToken } = doubleCsrf(doubleCsrfOptions);
-
+ 
 @Injectable()
 export class CsrfMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
