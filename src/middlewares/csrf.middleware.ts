@@ -24,8 +24,9 @@ const doubleCsrfOptions: DoubleCsrfConfigOptions = {
     (req.query && req.query._csrf),
 };
 
-const { doubleCsrfProtection, generateCsrfToken } = doubleCsrf(doubleCsrfOptions);
- 
+const { doubleCsrfProtection, generateCsrfToken } =
+  doubleCsrf(doubleCsrfOptions);
+
 @Injectable()
 export class CsrfMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
