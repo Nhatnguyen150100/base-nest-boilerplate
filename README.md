@@ -33,11 +33,6 @@ graph TD
   B --> H[Swagger]
   B --> I[Logger]
   B --> J[Health Check]
-
-  style G fill:#f9f,stroke:#333,stroke-width:1px
-  style H fill:#cff,stroke:#333,stroke-width:1px
-  style I fill:#cfc,stroke:#333,stroke-width:1px
-  style J fill:#fcf,stroke:#333,stroke-width:1px
 ```
 
 - **src/**
@@ -69,7 +64,7 @@ cp .env.example .env
 pnpm start:dev
 ```
 
-Access Swagger: [http://localhost:3000/api](http://localhost:3000/api)
+Access Swagger: [http://localhost:3000/documentation](http://localhost:3000/documentation)
 
 ### 3️⃣ Run with Docker
 
