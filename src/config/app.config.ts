@@ -25,11 +25,12 @@ export class AppConfig {
     return this.getString('NODE_ENV');
   }
 
-  get appConfig() {
+  get generalConfig() {
     return {
       port: this.getString('PORT'),
       serverUrl: this.getString('BASE_SERVER_URL'),
       clientUrl: this.getString('BASE_CLIENT_URL'),
+      apiPrefix: this.getString('API_PREFIX'),
     };
   }
 

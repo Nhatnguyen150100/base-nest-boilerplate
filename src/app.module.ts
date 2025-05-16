@@ -1,4 +1,3 @@
-import { AppConfig } from './config/app.config';
 import {
   DynamicModule,
   MiddlewareConsumer,
@@ -8,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
 import * as dotenv from 'dotenv';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { SharedModule } from './shared/module/shared.module';
 import typeormConfig from './config/typeorm.config';
@@ -21,6 +19,8 @@ import { UploadModule } from './modules/upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CsrfMiddleware } from './middlewares/csrf.middleware';
+import { HealthModule } from './health/health.module';
+import databaseModule from './config/database.module';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
@@ -33,18 +33,6 @@ const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
     serveRoot: '/images',
   }),
 ];
-
-const databaseModule: DynamicModule | Promise<DynamicModule> =
-  TypeOrmModule.forRootAsync({
-    inject: [AppConfig],
-    useFactory: (appConfig: AppConfig) => {
-      const config = appConfig.typeOrmConfig;
-      if (!config) {
-        throw new Error('TypeORM configuration is not defined');
-      }
-      return config;
-    },
-  });
 
 @Module({
   providers: [
@@ -71,6 +59,7 @@ const databaseModule: DynamicModule | Promise<DynamicModule> =
     SharedModule,
     AuthModule,
     UploadModule,
+    HealthModule,
   ],
 })
 export class AppModule implements NestModule {

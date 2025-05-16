@@ -36,7 +36,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   app.use(morgan('combined'));
   app.enableVersioning();
   app.enableCors({
-    origin: [configService.appConfig.clientUrl],
+    origin: [configService.generalConfig.clientUrl],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     preflightContinue: false,
@@ -44,7 +44,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     allowedHeaders: ['Content-Type', 'Authorization', 'token'],
     exposedHeaders: ['X-Total-Count', 'token'],
   });
-  app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix(configService.generalConfig.apiPrefix);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -68,9 +68,9 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     app.enableShutdownHooks();
   }
   if (configService.documentationEnabled) {
-    setupSwagger(app, configService.appConfig.port);
+    setupSwagger(app, configService.generalConfig.port);
   }
-  await app.listen(configService.appConfig.port);
+  await app.listen(configService.generalConfig.port);
   Logger.log(`Server running on ${await app.getUrl()}`, 'NestApplication');
   return app;
 }

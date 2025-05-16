@@ -9,7 +9,7 @@ export class UploadService {
   constructor(private readonly appConfig: AppConfig) {}
 
   handleFile(file: Express.Multer.File) {
-    const imageUrl = `${this.appConfig.appConfig.serverUrl}/${file.filename}`;
+    const imageUrl = `${this.appConfig.generalConfig.serverUrl}/${file.filename}`;
     return new BaseSuccessResponse({
       data: imageUrl,
       message: 'Image uploaded successfully',
