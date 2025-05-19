@@ -9,18 +9,15 @@ import { AuthModule } from './modules/auth/auth.module';
 import * as dotenv from 'dotenv';
 import { ConfigModule } from '@nestjs/config';
 import { SharedModule } from './shared/module/shared.module';
-import typeormConfig from './config/typeorm.config';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './guards/authGuard';
-import { RoleGuard } from './guards/rolesGuard';
-import { BadRequestExceptionFilter } from './filters/bad-request.filter';
-import { UnauthorizedExceptionFilter } from './filters/unauthorized.filter';
 import { UploadModule } from './modules/upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { CsrfMiddleware } from './middlewares/csrf.middleware';
 import { HealthModule } from './health/health.module';
-import databaseModule from './config/database.module';
+import { ExceptionModule } from './modules/exception/exception.module';
+import { CsrfMiddleware } from './middlewares';
+import typeormConfig from './config/typeorm.config';
+import databaseModule from './modules/database/database.module';
+import { GuardModule } from './modules/guard/Guard.module';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
@@ -35,24 +32,6 @@ const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
 ];
 
 @Module({
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: BadRequestExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: UnauthorizedExceptionFilter,
-    },
-  ],
   imports: [
     ...coreModule,
     databaseModule,
@@ -60,6 +39,8 @@ const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
     AuthModule,
     UploadModule,
     HealthModule,
+    ExceptionModule,
+    GuardModule,
   ],
 })
 export class AppModule implements NestModule {

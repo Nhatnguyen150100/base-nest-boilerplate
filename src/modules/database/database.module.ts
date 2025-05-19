@@ -1,5 +1,5 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppConfig } from './app.config';
+import { AppConfig } from '../../config/app.config';
 import { DynamicModule } from '@nestjs/common';
 
 const databaseModule: DynamicModule | Promise<DynamicModule> =

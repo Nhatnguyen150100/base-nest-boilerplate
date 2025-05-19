@@ -6,4 +6,4 @@ enum EHttpMethod {
   PATCH = 'patch',
 }
 
-export default EHttpMethod;
+export { EHttpMethod };

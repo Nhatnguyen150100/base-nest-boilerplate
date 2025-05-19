@@ -1,26 +1,29 @@
 import {
   Controller,
-  Post,
   UseInterceptors,
   UploadedFile,
-  Body,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
-import { Roles } from '../../decorators/roles.decorators';
-import { UserRole } from '../../constants/role';
 import { diskStorage } from 'multer';
 import * as path from 'path';
 import { existsSync, mkdirSync } from 'fs';
+import { ApiHttpOperation } from '../../decorators';
+import { DEFINE_TAGS_NAME, EHttpMethod } from '../../constants';
 
-@Controller('images')
+@Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @Post('upload-image')
-  @Roles(UserRole.ADMIN)
+  @ApiHttpOperation({
+    method: EHttpMethod.POST,
+    tags: [DEFINE_TAGS_NAME.UPLOAD],
+    path: '/',
+    summary: 'Tải lên 1 file',
+  })
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('file', {
       storage: diskStorage({
         destination: (_, __, cb) => {
           const dir = path.join(__dirname, '..', '..', '..', 'uploads');
@@ -40,9 +43,14 @@ export class UploadController {
     return this.uploadService.handleFile(file);
   }
 
-  @Post('delete-images')
-  @Roles(UserRole.ADMIN)
-  async removeImage(@Body() body: { urls: string[] }) {
-    return this.uploadService.deleteImages(body.urls);
+  @ApiHttpOperation({
+    method: EHttpMethod.DELETE,
+    tags: [DEFINE_TAGS_NAME.UPLOAD],
+    path: '/',
+    summary: 'Xóa nhiều file',
+  })
+  async removeImage(@Query('urls') urls: string | string[]) {
+    const parsedUrls = Array.isArray(urls) ? urls : [urls];
+    return this.uploadService.deleteFiles(parsedUrls);
   }
 }

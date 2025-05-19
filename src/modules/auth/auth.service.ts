@@ -1,20 +1,12 @@
-import {
-  BadRequestException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { TokenService } from '../../shared/services/token.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
-import {
-  BaseErrorResponse,
-  BaseSuccessResponse,
-} from '../../config/response.config';
-import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
+import { BaseErrorResponse, BaseSuccessResponse } from '../../config';
+import { UserNotFoundException } from '../../exceptions';
 
 @Injectable()
 export class AuthService {

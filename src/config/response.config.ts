@@ -1,7 +1,6 @@
-import { PageDto } from '../common/dto/page.dto';
-import { PaginationMetaDataDto } from '../common/dto/pagination-metadata.dto';
-import { PaginationDto } from '../common/dto/pagination.dto';
-import { DEFINE_STATUS_RESPONSE } from './statusResponse.config';
+import { HttpStatus } from '@nestjs/common';
+import { getResponseObject } from '../helpers';
+import { PageDto, PaginationDto, PaginationMetaDataDto } from '../common/dto';
 
 export class BaseResponse<T> {
   public readonly statusCode: number;
@@ -27,7 +26,7 @@ export class BaseResponse<T> {
 
 export class BasePageResponse<T> extends BaseResponse<PageDto<T>> {
   constructor({
-    statusCode = DEFINE_STATUS_RESPONSE.SUCCESS.statusCode,
+    statusCode = getResponseObject(HttpStatus.OK).statusCode,
     message,
     data,
     paginationDto,
@@ -59,8 +58,9 @@ export class BaseErrorResponse extends BaseResponse<null> {
     statusCode?: number;
   }) {
     super({
-      statusCode: statusCode ?? DEFINE_STATUS_RESPONSE.BAD_REQUEST.statusCode,
-      message: message ?? DEFINE_STATUS_RESPONSE.BAD_REQUEST.message,
+      statusCode:
+        statusCode ?? getResponseObject(HttpStatus.BAD_REQUEST).statusCode,
+      message: message ?? getResponseObject(HttpStatus.BAD_REQUEST).message,
     });
   }
 }
@@ -68,9 +68,9 @@ export class BaseErrorResponse extends BaseResponse<null> {
 export class BaseSuccessResponse<T> extends BaseResponse<T> {
   constructor({ data, message }: { data: T; message: string }) {
     super({
-      statusCode: DEFINE_STATUS_RESPONSE.SUCCESS.statusCode,
+      statusCode: getResponseObject(HttpStatus.OK).statusCode,
       data,
-      message: message ?? DEFINE_STATUS_RESPONSE.SUCCESS.message,
+      message: message ?? getResponseObject(HttpStatus.OK).message,
     });
   }
 }

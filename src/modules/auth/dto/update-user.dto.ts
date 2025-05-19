@@ -1,4 +1,4 @@
-import { StringFieldOptional } from '../../../decorators/field.decorators';
+import { StringFieldOptional } from '../../../decorators';
 
 export class UpdateUserDto {
   @StringFieldOptional({

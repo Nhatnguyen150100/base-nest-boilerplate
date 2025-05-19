@@ -1,13 +1,13 @@
 import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
-import { UserRole } from '../../../constants/role';
 import { BaseEntity } from '../../../database/entity/base.entity';
 import {
   EmailField,
   EnumField,
   PasswordField,
   StringField,
-} from '../../../decorators/field.decorators';
+} from '../../../decorators';
+import { UserRole } from '../../../constants';
 
 @Entity('users')
 @Unique(['email'])

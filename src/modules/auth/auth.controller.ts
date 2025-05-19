@@ -1,13 +1,11 @@
 import { Body, Controller } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { ApiExtraModels } from '@nestjs/swagger';
-import { ApiHttpOperation } from '../../decorators/http-method.decorators';
 import { User } from './entities/user.entity';
+import { DEFINE_TAGS_NAME, EHttpMethod } from '../../constants';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DEFINE_TAGS_NAME } from '../../constants/tags-swagger';
-import { IsPublic } from '../../decorators/public.decorators';
-import EHttpMethod from '../../constants/http-method';
+import { ApiHttpOperation, IsPublic } from '../../decorators';
 
 @Controller('auth')
 @ApiExtraModels(User, CreateUserDto, UpdateUserDto)

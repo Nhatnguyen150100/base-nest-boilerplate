@@ -15,16 +15,17 @@ export class UnprocessableEntityFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
-    const exceptionResponse = exception.getResponse() as BaseErrorResponse;
+    const exceptionResponse = exception.getResponse() as any;
     Logger.error(
       `Caught UnprocessableEntityException: ${exceptionResponse.message}`,
       'UnprocessableEntityException',
     );
 
-    response.status(status).json({
-      ...exceptionResponse,
+    const errorObj = new BaseErrorResponse({
+      message: exceptionResponse.message,
       statusCode: status,
-      timeStamp: new Date().toISOString(),
     });
+
+    response.status(status).json(errorObj);
   }
 }

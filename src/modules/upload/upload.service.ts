@@ -1,46 +1,44 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { stat, unlink } from 'fs';
 import * as path from 'path';
-import { BaseSuccessResponse } from '../../config/response.config';
-import { AppConfig } from '../../config/app.config';
-
+import { AppConfig, BaseSuccessResponse } from '../../config';
 @Injectable()
 export class UploadService {
   constructor(private readonly appConfig: AppConfig) {}
 
   handleFile(file: Express.Multer.File) {
-    const imageUrl = `${this.appConfig.generalConfig.serverUrl}/${file.filename}`;
+    const fileUrl = `${this.appConfig.generalConfig.serverUrl}/${file.filename}`;
     return new BaseSuccessResponse({
-      data: imageUrl,
-      message: 'Image uploaded successfully',
+      data: fileUrl,
+      message: 'File uploaded successfully',
     });
   }
 
-  async deleteImages(imageUrls: string[]) {
+  async deleteFiles(imageUrls: string[]) {
     const deletePromises = imageUrls.map((url) => {
       return new Promise((resolve, reject) => {
         const urlObj = new URL(url);
         const pathParts = urlObj.pathname.split('/');
-        const imageName = pathParts.pop();
-        const imagePath = path.join(
+        const fileName = pathParts.pop();
+        const filePath = path.join(
           __dirname,
           '..',
           '..',
           '..',
           'uploads',
-          imageName,
+          fileName,
         );
 
-        stat(imagePath, (err) => {
+        stat(filePath, (err) => {
           if (err) {
-            return reject({ imageName, message: 'Image not found' });
+            return reject({ fileName, message: 'Image not found' });
           }
 
-          unlink(imagePath, (err) => {
+          unlink(filePath, (err) => {
             if (err) {
-              return reject({ imageName, message: 'Could not delete image' });
+              return reject({ fileName, message: 'Could not delete image' });
             }
-            resolve({ imageName, message: 'Image deleted successfully' });
+            resolve({ fileName, message: 'Image deleted successfully' });
           });
         });
       });

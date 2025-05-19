@@ -1,8 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { HealthCheck, HealthCheckService } from '@nestjs/terminus';
 import { DbHealthService } from './services/db-health.service';
 import { MemoryHealthService } from './services/memory-health.service';
-import { IsPublic } from '../decorators/public.decorators';
+import { ApiHttpOperation } from '../decorators';
+import { DEFINE_TAGS_NAME, EHttpMethod } from '../constants';
 
 @Controller('health')
 export class HealthController {
@@ -12,8 +13,13 @@ export class HealthController {
     private memory: MemoryHealthService,
   ) {}
 
-  @IsPublic()
-  @Get()
+  @ApiHttpOperation({
+    method: EHttpMethod.GET,
+    tags: [DEFINE_TAGS_NAME.HEALTH],
+    path: '/',
+    isPrivateRoute: false,
+    summary: 'Kiểm tra tình trạng của ứng dụng',
+  })
   @HealthCheck()
   check() {
     return this.health.check([
