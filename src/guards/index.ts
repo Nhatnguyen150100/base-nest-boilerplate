@@ -1,2 +1,3 @@
-export * from './authGuard';
-export * from './rolesGuard';
+export * from './auth.guard';
+export * from './googleAuth.guard';
+export * from './roles.guard';

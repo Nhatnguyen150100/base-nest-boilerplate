@@ -13,19 +13,13 @@ import helmet from 'helmet';
 import * as compression from 'compression';
 import * as morgan from 'morgan';
 import { setupSwagger } from './setup-swagger';
-import { UnprocessableEntityFilter } from './filters/unprocessable-entity.filter';
 import { join } from 'path';
-import { HttpExceptionFilter } from './filters/http.filter';
 
 export async function bootstrap(): Promise<NestExpressApplication> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.select(SharedModule).get(AppConfig);
   app.useStaticAssets(join(__dirname, '..', 'uploads'));
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.useGlobalFilters(
-    new HttpExceptionFilter(),
-    new UnprocessableEntityFilter(),
-  );
   app.enable('trust proxy');
   app.use(helmet());
   app.use(compression());

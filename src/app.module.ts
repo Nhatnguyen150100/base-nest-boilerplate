@@ -17,7 +17,7 @@ import { ExceptionModule } from './modules/exception/exception.module';
 import { CsrfMiddleware } from './middlewares';
 import typeormConfig from './config/typeorm.config';
 import databaseModule from './modules/database/database.module';
-import { GuardModule } from './modules/guard/Guard.module';
+import { GuardModule } from './modules/guard/guard.module';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [

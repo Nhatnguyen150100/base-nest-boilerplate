@@ -1,6 +1,7 @@
 import { applyDecorators, Delete, Get, Patch, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { THttpMethod } from '../types/http-method';
+import { IsPublic } from './public.decorators';
 
 interface IProps {
   method: THttpMethod;
@@ -41,7 +42,7 @@ export function ApiHttpOperation({
     throw new Error(`Method '${method}' is not supported`);
   }
 
-  const apiBearerAuth = isPrivateRoute ? ApiBearerAuth() : null;
+  const apiBearerAuth = isPrivateRoute ? ApiBearerAuth() : IsPublic();
 
   const allDecorators = [
     methodDecorator(),

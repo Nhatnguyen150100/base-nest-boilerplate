@@ -34,6 +34,14 @@ export class AppConfig {
     };
   }
 
+  get oAuth2Config() {
+    return {
+      clientId: this.getString('GOOGLE_CLIENT_ID'),
+      clientSecret: this.getString('GOOGLE_CLIENT_SECRET'),
+      redirectUrl: this.getString('GOOGLE_REDIRECT_URL'),
+    };
+  }
+
   get documentationEnabled(): boolean {
     return this.getBoolean('ENABLE_DOCUMENTATION');
   }

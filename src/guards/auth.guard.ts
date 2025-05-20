@@ -1,13 +1,9 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorators';
 import { TokenService } from '../shared/services/token.service';
+import { throwUnauthorized } from '../helpers/http-exception.helper';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -30,19 +26,16 @@ export class AuthGuard implements CanActivate {
 
     // Check if the request has an authorization header
     const { authorization } = request.headers;
-    if (!authorization || authorization.trim() === '') {
-      throw new UnauthorizedException('Please provide token');
-    }
-    const token = authorization.replace(/bearer/gim, '').trim();
+    const token = authorization?.replace(/bearer/gim, '').trim();
     if (!token) {
-      throw new UnauthorizedException(
+      throwUnauthorized(
         'No token provided. Please provide a token first and try again.',
       );
     }
 
     const userVerify = this.tokenService.verifyToken(token);
     if (!userVerify) {
-      throw new UnauthorizedException(
+      throwUnauthorized(
         'Invalid token. Please provide a correct token and try again.',
       );
     }

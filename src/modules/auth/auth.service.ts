@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { TokenService } from '../../shared/services/token.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -7,6 +7,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { BaseErrorResponse, BaseSuccessResponse } from '../../config';
 import { UserNotFoundException } from '../../exceptions';
+import { throwBadRequest } from '../../helpers/http-exception.helper';
+import { IUserReq } from '../../types';
 
 @Injectable()
 export class AuthService {
@@ -22,11 +24,7 @@ export class AuthService {
           email: userDto.email,
         },
       });
-      if (isExistEmail) {
-        return new BaseErrorResponse({
-          message: 'Email already exists',
-        });
-      }
+      if (isExistEmail) throw new ConflictException('Email already exists');
 
       const newUserObj = this.userRepository.create(userDto);
       await this.userRepository.save(newUserObj);
@@ -57,9 +55,7 @@ export class AuthService {
       userExit.password,
     );
     if (!isMatchPassword) {
-      throw new BadRequestException(
-        new BaseErrorResponse({ message: 'Password incorrect' }),
-      );
+      throwBadRequest('Password incorrect. Please try again!');
     }
 
     const accessToken = this.tokenService.generateToken(userExit);
@@ -75,5 +71,24 @@ export class AuthService {
 
   private async comparePassword(password: string, hashPassword: string) {
     return await bcrypt.compare(password, hashPassword);
+  }
+
+  async googleLogin(req: any) {
+    if (!req.user) {
+      throw new UserNotFoundException();
+    }
+    const user = req.user as IUserReq;
+    const payload = {
+      email: user.email,
+      name: user.name,
+    } as User;
+    const accessToken = this.tokenService.generateToken(payload);
+    return new BaseSuccessResponse({
+      data: {
+        ...user,
+        accessToken,
+      },
+      message: 'User logged in successfully',
+    });
   }
 }
