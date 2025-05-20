@@ -12,12 +12,12 @@ import { SharedModule } from './shared/module/shared.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { HealthModule } from './health/health.module';
 import { ExceptionModule } from './modules/exception/exception.module';
 import { CsrfMiddleware } from './middlewares';
 import typeormConfig from './config/typeorm.config';
 import databaseModule from './modules/database/database.module';
 import { GuardModule } from './modules/guard/guard.module';
+import { HealthModule } from './modules/health/health.module';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
