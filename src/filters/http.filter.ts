@@ -1,3 +1,5 @@
+import { BaseErrorResponse } from '@/config';
+import { getResponseObject } from '@/helpers';
 import {
   Catch,
   ExceptionFilter,
@@ -7,8 +9,6 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { BaseErrorResponse } from '../config/response.config';
-import { getResponseObject } from '../helpers';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {

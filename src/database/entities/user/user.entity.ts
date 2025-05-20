@@ -1,13 +1,13 @@
 import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
-import { BaseEntity } from '../../../database/entity/base.entity';
+import { BaseEntity } from '../base';
 import {
   EmailField,
   EnumField,
   PasswordField,
   StringField,
-} from '../../../decorators';
-import { UserRole } from '../../../constants';
+} from '@/decorators';
+import { UserRole } from '@/constants';
 
 @Entity('users')
 @Unique(['email'])
@@ -21,6 +21,21 @@ export class User extends BaseEntity {
   @Column()
   @EmailField()
   email: string;
+
+  @Column({
+    nullable: true,
+  })
+  avatar: string;
+
+  @Column({
+    nullable: true,
+  })
+  address: string;
+
+  @Column({
+    nullable: true,
+  })
+  phoneNumber: string;
 
   @Column()
   @PasswordField({

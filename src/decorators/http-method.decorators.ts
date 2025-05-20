@@ -1,6 +1,6 @@
+import { THttpMethod } from '@/types';
 import { applyDecorators, Delete, Get, Patch, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { THttpMethod } from '../types/http-method';
 import { IsPublic } from './public.decorators';
 
 interface IProps {

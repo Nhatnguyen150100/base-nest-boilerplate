@@ -1,12 +1,11 @@
 import { Body, Controller, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiExtraModels } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
-import { DEFINE_TAGS_NAME, EHttpMethod } from '../../constants';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiHttpOperation } from '../../decorators';
-import { GoogleOAuthGuard } from '../../guards';
+import { User } from '@/database/entities';
+import { CreateUserDto, UpdateUserDto } from '@/database/entities/user/dto';
+import { ApiHttpOperation } from '@/decorators';
+import { DEFINE_TAGS_NAME, EHttpMethod } from '@/constants';
+import { GoogleOAuthGuard } from '@/guards';
 
 @Controller('auth')
 @ApiExtraModels(User, CreateUserDto, UpdateUserDto)
@@ -40,7 +39,9 @@ export class AuthController {
     tags: [DEFINE_TAGS_NAME.AUTH],
     isPrivateRoute: false,
     path: 'google',
-    summary: 'Đăng nhập bằng tài khoản Google',
+    summary:
+      'Đăng nhập bằng tài khoản Google (This endpoint is read-only in Swagger UI)',
+    description: 'You can view this, but it is disabled for Try it out',
   })
   @UseGuards(GoogleOAuthGuard)
   async googleAuth() {}
@@ -50,7 +51,9 @@ export class AuthController {
     tags: [DEFINE_TAGS_NAME.AUTH],
     isPrivateRoute: false,
     path: 'google/callback',
-    summary: 'Callback sau khi đăng nhập bằng tài khoản Google',
+    summary:
+      'Callback sau khi đăng nhập bằng tài khoản Google (This endpoint is read-only in Swagger UI)',
+    description: 'You can view this, but it is disabled for Try it out',
   })
   @UseGuards(GoogleOAuthGuard)
   googleAuthRedirect(@Req() req: any) {

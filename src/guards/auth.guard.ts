@@ -1,9 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorators';
-import { TokenService } from '../shared/services/token.service';
-import { throwUnauthorized } from '../helpers/http-exception.helper';
+import { TokenService } from '@/shared/services/token.service';
+import { IS_PUBLIC_KEY } from '@/constants';
+import { throwUnauthorized } from '@/helpers';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

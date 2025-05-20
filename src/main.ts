@@ -7,13 +7,13 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { SharedModule } from './shared/module/shared.module';
-import { AppConfig } from './config/app.config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import * as compression from 'compression';
 import * as morgan from 'morgan';
 import { setupSwagger } from './setup-swagger';
 import { join } from 'path';
+import { AppConfig } from './config';
 
 export async function bootstrap(): Promise<NestExpressApplication> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

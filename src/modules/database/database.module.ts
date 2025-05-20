@@ -1,6 +1,6 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppConfig } from '../../config/app.config';
 import { DynamicModule } from '@nestjs/common';
+import { AppConfig } from '@/config';
 
 const databaseModule: DynamicModule | Promise<DynamicModule> =
   TypeOrmModule.forRootAsync({

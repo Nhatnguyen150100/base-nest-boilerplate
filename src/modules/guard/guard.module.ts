@@ -1,6 +1,6 @@
+import { AuthGuard, RoleGuard } from '@/guards';
 import { Module, Global } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard, RoleGuard } from '../../guards';
 
 @Global()
 @Module({

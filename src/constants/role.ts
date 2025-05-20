@@ -3,4 +3,6 @@ enum UserRole {
   USER = 'USER',
 }
 
-export { UserRole };
+const ROLES_KEY = 'roles';
+
+export { UserRole, ROLES_KEY };

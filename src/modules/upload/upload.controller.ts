@@ -9,8 +9,8 @@ import { UploadService } from './upload.service';
 import { diskStorage } from 'multer';
 import * as path from 'path';
 import { existsSync, mkdirSync } from 'fs';
-import { ApiHttpOperation } from '../../decorators';
-import { DEFINE_TAGS_NAME, EHttpMethod } from '../../constants';
+import { DEFINE_TAGS_NAME, EHttpMethod } from '@/constants';
+import { ApiHttpOperation } from '@/decorators';
 
 @Controller('upload')
 export class UploadController {

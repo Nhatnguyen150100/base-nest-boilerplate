@@ -1,4 +1,4 @@
-import { EmailField, PasswordField } from '../../../decorators';
+import { EmailField, PasswordField } from '@/decorators';
 
 export class CreateUserDto {
   @EmailField({

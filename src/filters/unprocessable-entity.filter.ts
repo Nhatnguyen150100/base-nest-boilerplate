@@ -1,3 +1,4 @@
+import { BaseErrorResponse } from '@/config';
 import {
   ArgumentsHost,
   Catch,
@@ -5,7 +6,6 @@ import {
   Logger,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { BaseErrorResponse } from '../config/response.config';
 import { Response } from 'express';
 
 @Catch(UnprocessableEntityException)

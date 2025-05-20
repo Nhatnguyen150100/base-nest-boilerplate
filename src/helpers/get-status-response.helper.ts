@@ -1,5 +1,5 @@
+import { DEFINE_STATUS_RESPONSE } from '@/config';
 import { HttpStatus } from '@nestjs/common';
-import { DEFINE_STATUS_RESPONSE } from '../config/statusResponse.config';
 
 export function getResponseObject(statusCode: number): {
   statusCode: number;

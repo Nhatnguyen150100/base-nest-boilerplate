@@ -1,14 +1,14 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common';
-import { TokenService } from '../../shared/services/token.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
-import { BaseErrorResponse, BaseSuccessResponse } from '../../config';
-import { UserNotFoundException } from '../../exceptions';
-import { throwBadRequest } from '../../helpers/http-exception.helper';
-import { IUserReq } from '../../types';
+import { TokenService } from '@/shared/services/token.service';
+import { User } from '@/database/entities';
+import { CreateUserDto } from '@/database/entities/user/dto';
+import { BaseErrorResponse, BaseSuccessResponse } from '@/config';
+import { UserNotFoundException } from '@/exceptions';
+import { throwBadRequest } from '@/helpers';
+import { IUserReq } from '@/types';
 
 @Injectable()
 export class AuthService {

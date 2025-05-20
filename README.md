@@ -8,6 +8,7 @@
 
 - ⚡ **Modular Architecture**: Easy to scale, maintain, and extend.
 - 🔒 **Enhanced Security**: Includes JWT, CSRF protection, Helmet, and rate limiting.
+- 🔑 **Social Login**: Google OAuth2 integration with Passport.js.
 - 📝 **Auto-Generated API Docs**: Built-in Swagger UI.
 - 🧪 **Comprehensive Testing**: Unit & E2E tests with Jest.
 - 🐳 **Modern Deployment**: Docker, Docker Compose, and `.env` support.

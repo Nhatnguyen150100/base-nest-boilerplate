@@ -2,8 +2,8 @@ import { Controller } from '@nestjs/common';
 import { HealthCheck, HealthCheckService } from '@nestjs/terminus';
 import { DbHealthService } from './services/db-health.service';
 import { MemoryHealthService } from './services/memory-health.service';
-import { ApiHttpOperation } from '../../decorators';
-import { DEFINE_TAGS_NAME, EHttpMethod } from '../../constants';
+import { ApiHttpOperation } from '@/decorators';
+import { DEFINE_TAGS_NAME, EHttpMethod } from '@/constants';
 
 @Controller('health')
 export class HealthController {

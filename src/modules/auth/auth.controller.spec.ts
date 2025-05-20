@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TokenService } from '../../shared/services/token.service';
-import { User } from './entities/user.entity';
+import { User } from '../../database/entities/user/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 const mockTokenService = {
