@@ -7,8 +7,8 @@ import {
 import { UploadService } from './upload.service';
 import { DEFINE_TAGS_NAME, EHttpMethod } from '@/constants';
 import { ApiHttpOperation } from '@/decorators';
-import { UploadFileInterceptor } from '@/interceptors/upload.interceptor';
 import { ApiConsumes } from '@nestjs/swagger';
+import { UploadFileInterceptor } from '@/interceptors';
 
 @Controller('upload')
 export class UploadController {
