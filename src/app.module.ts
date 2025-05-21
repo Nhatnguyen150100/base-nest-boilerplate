@@ -15,9 +15,10 @@ import { join } from 'path';
 import { ExceptionModule } from './modules/exception/exception.module';
 import { CsrfMiddleware } from './middlewares';
 import typeormConfig from './config/typeorm.config';
-import databaseModule from './modules/database/database.module';
 import { GuardModule } from './modules/guard/guard.module';
 import { HealthModule } from './modules/health/health.module';
+import { DatabaseModule } from './modules/database/database.module';
+import { UserModule } from './modules/user/user.module';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
@@ -34,13 +35,14 @@ const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
 @Module({
   imports: [
     ...coreModule,
-    databaseModule,
     SharedModule,
+    DatabaseModule,
     AuthModule,
     UploadModule,
     HealthModule,
     ExceptionModule,
     GuardModule,
+    UserModule,
   ],
 })
 export class AppModule implements NestModule {

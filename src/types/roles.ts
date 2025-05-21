@@ -1,1 +1,3 @@
-export type IRole = 'ADMIN' | 'USER';
+import { EUserRole } from '@/constants';
+
+export type IRole = keyof typeof EUserRole;

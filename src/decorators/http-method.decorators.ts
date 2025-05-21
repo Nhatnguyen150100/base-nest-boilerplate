@@ -1,9 +1,18 @@
 import { THttpMethod } from '@/types';
 import { applyDecorators, Delete, Get, Patch, Post, Put } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiBodyOptions,
+  ApiOperation,
+  ApiQuery,
+  ApiQueryOptions,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { IsPublic } from './public.decorators';
+import { DEFINE_STATUS_RESPONSE } from '@/config';
 
-interface IProps {
+type IProps = {
   method: THttpMethod;
   path: string;
   isPrivateRoute?: boolean;
@@ -11,7 +20,9 @@ interface IProps {
   tags: string[];
   description?: string;
   responses?: { status: number; description: string }[];
-}
+  queries?: ApiQueryOptions[];
+  body?: ApiBodyOptions;
+};
 
 export function ApiHttpOperation({
   method,
@@ -21,12 +32,15 @@ export function ApiHttpOperation({
   tags,
   description,
   responses = [],
+  queries,
+  body,
 }: IProps) {
-  const defaultResponses = [
-    { status: 200, description: 'Request is successfully' },
-    { status: 400, description: 'Request is failed' },
-    { status: 500, description: 'Server error' },
-  ];
+  const defaultResponses = Object.values(DEFINE_STATUS_RESPONSE).map(
+    (_item) => ({
+      status: _item.statusCode,
+      description: _item.message,
+    }),
+  );
 
   const allResponses = [...defaultResponses, ...responses];
 
@@ -44,10 +58,15 @@ export function ApiHttpOperation({
 
   const apiBearerAuth = isPrivateRoute ? ApiBearerAuth() : IsPublic();
 
+  const apiQueryDecorators = queries?.map((q) => ApiQuery(q)) ?? [];
+  const apiBodyDecorator = body ? ApiBody(body) : null;
+
   const allDecorators = [
     methodDecorator(),
     ApiOperation({ summary, description, tags }),
     apiBearerAuth,
+    apiBodyDecorator,
+    ...apiQueryDecorators,
     ...allResponses.map((response) =>
       ApiResponse({
         status: response.status,

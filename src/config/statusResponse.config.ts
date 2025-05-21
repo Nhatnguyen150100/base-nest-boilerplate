@@ -8,6 +8,10 @@ const DEFINE_STATUS_RESPONSE: Record<
     statusCode: HttpStatus.OK,
     message: 'Success',
   },
+  [HttpStatus.CREATED]: {
+    statusCode: HttpStatus.CREATED,
+    message: 'Created',
+  },
   [HttpStatus.BAD_REQUEST]: {
     statusCode: HttpStatus.BAD_REQUEST,
     message: 'Bad Request',

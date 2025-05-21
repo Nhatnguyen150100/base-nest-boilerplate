@@ -4,6 +4,7 @@ const DEFINE_TAGS_NAME = {
   AUTH: 'Auth',
   UPLOAD: 'Upload',
   HEALTH: 'Health',
+  USER: 'User',
 };
 
 const DEFINE_TAGS: ITagsSwagger[] = [
@@ -18,6 +19,10 @@ const DEFINE_TAGS: ITagsSwagger[] = [
   {
     name: DEFINE_TAGS_NAME.HEALTH,
     description: 'Các endpoint sử dụng để kiểm tra tình trạng của ứng dụng',
+  },
+  {
+    name: DEFINE_TAGS_NAME.USER,
+    description: 'Các endpoint sử dụng để quản lý người dùng',
   },
 ];
 

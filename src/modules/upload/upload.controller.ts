@@ -4,13 +4,11 @@ import {
   UploadedFile,
   Query,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
-import { diskStorage } from 'multer';
-import * as path from 'path';
-import { existsSync, mkdirSync } from 'fs';
 import { DEFINE_TAGS_NAME, EHttpMethod } from '@/constants';
 import { ApiHttpOperation } from '@/decorators';
+import { UploadFileInterceptor } from '@/interceptors/upload.interceptor';
+import { ApiConsumes } from '@nestjs/swagger';
 
 @Controller('upload')
 export class UploadController {
@@ -21,24 +19,23 @@ export class UploadController {
     tags: [DEFINE_TAGS_NAME.UPLOAD],
     path: '/',
     summary: 'Tải lên 1 file',
+    body: {
+      required: true,
+      description: 'Form chứa file tải lên',
+      schema: {
+        type: 'object',
+        properties: {
+          file: {
+            type: 'string',
+            format: 'binary',
+            description: 'Tệp hình ảnh (image, document...)',
+          },
+        },
+      },
+    },
   })
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: (_, __, cb) => {
-          const dir = path.join(__dirname, '..', '..', '..', 'uploads');
-          if (!existsSync(dir)) {
-            mkdirSync(dir, { recursive: true });
-          }
-          cb(null, dir);
-        },
-        filename: (_, file, cb) => {
-          const uniqueName = `${Date.now()}-${file.originalname}`;
-          cb(null, uniqueName);
-        },
-      }),
-    }),
-  )
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(UploadFileInterceptor)
   uploadImage(@UploadedFile() file: Express.Multer.File) {
     return this.uploadService.handleFile(file);
   }
@@ -48,6 +45,16 @@ export class UploadController {
     tags: [DEFINE_TAGS_NAME.UPLOAD],
     path: '/',
     summary: 'Xóa nhiều file',
+    queries: [
+      {
+        name: 'urls',
+        type: String,
+        required: true,
+        isArray: true,
+        description: 'Danh sách URL file cần xóa',
+        example: ['https://example.com/a.png', 'https://example.com/b.jpg'],
+      },
+    ],
   })
   async removeImage(@Query('urls') urls: string | string[]) {
     const parsedUrls = Array.isArray(urls) ? urls : [urls];

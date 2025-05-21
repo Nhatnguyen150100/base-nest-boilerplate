@@ -1,9 +1,9 @@
 #!/bin/bash
+set -a
+source .env
+set +a
 
 echo "🚀 Starting Docker for DB_TYPE=$DB_TYPE"
-
-if [ "$DB_TYPE" = "postgres" ]; then
-  docker-compose -f docker-compose.yml -f docker-compose.postgres.yml up --build
-else
-  docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up --build
-fi
+echo "🚀 Starting Docker for DB_USERNAME=$DB_USERNAME"
+echo "🚀 Starting Docker for DB_PASSWORD=$DB_PASSWORD"
+docker compose up --build -d

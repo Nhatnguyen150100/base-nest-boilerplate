@@ -66,9 +66,17 @@ export class BaseErrorResponse extends BaseResponse<null> {
 }
 
 export class BaseSuccessResponse<T> extends BaseResponse<T> {
-  constructor({ data, message }: { data: T; message: string }) {
+  constructor({
+    data,
+    message,
+    statusCode,
+  }: {
+    data: T;
+    message: string;
+    statusCode?: number;
+  }) {
     super({
-      statusCode: getResponseObject(HttpStatus.OK).statusCode,
+      statusCode: statusCode ?? getResponseObject(HttpStatus.OK).statusCode,
       data,
       message: message ?? getResponseObject(HttpStatus.OK).message,
     });

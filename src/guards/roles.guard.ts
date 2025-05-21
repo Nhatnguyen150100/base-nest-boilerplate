@@ -1,5 +1,6 @@
-import { ROLES_KEY, UserRole } from '@/constants';
+import { ROLES_KEY } from '@/constants';
 import { throwForbidden } from '@/helpers';
+import { IRole, IUserReq } from '@/types';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
@@ -8,7 +9,7 @@ export class RoleGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.get<UserRole[]>(
+    const requiredRoles = this.reflector.get<Array<IRole>>(
       ROLES_KEY,
       context.getHandler(),
     );
@@ -17,14 +18,13 @@ export class RoleGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
+    const user = request.user as IUserReq;
 
-    if (!user || !user.roles) {
-      throwForbidden('User roles not found');
+    if (!user?.role) {
+      throwForbidden('User role not found');
     }
 
-    const hasRole = () =>
-      user.roles.some((role: UserRole) => requiredRoles.includes(role));
+    const hasRole = () => requiredRoles.includes(user.role);
     if (!hasRole()) {
       throwForbidden('User does not have the required role');
     }

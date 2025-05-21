@@ -1,13 +1,13 @@
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
-import { BaseEntity } from '../base';
 import {
   EmailField,
   EnumField,
   PasswordField,
   StringField,
 } from '@/decorators';
-import { UserRole } from '@/constants';
+import { EUserRole } from '@/constants';
+import { BaseEntity } from '@/database/entities';
 
 @Entity('users')
 @Unique(['email'])
@@ -46,15 +46,15 @@ export class User extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: UserRole,
-    default: UserRole.USER,
+    enum: EUserRole,
+    default: EUserRole.USER,
   })
-  @EnumField(() => UserRole)
-  role: UserRole;
+  @EnumField(() => EUserRole)
+  role: EUserRole;
 
   @BeforeInsert()
   async hashPassword() {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    const salt = await bcryptjs.genSalt(10);
+    this.password = await bcryptjs.hash(this.password, salt);
   }
 }

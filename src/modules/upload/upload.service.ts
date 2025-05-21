@@ -1,7 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { stat, unlink } from 'fs';
 import * as path from 'path';
-import { AppConfig, BaseSuccessResponse } from '../../config';
+import { throwInternalError } from '@/helpers';
+import { AppConfig, BaseSuccessResponse } from '@/config';
 @Injectable()
 export class UploadService {
   constructor(private readonly appConfig: AppConfig) {}
@@ -14,31 +15,24 @@ export class UploadService {
     });
   }
 
-  async deleteFiles(imageUrls: string[]) {
-    const deletePromises = imageUrls.map((url) => {
+  async deleteFiles(fileUrls: string[]) {
+    const deletePromises = fileUrls.map((url) => {
       return new Promise((resolve, reject) => {
         const urlObj = new URL(url);
-        const pathParts = urlObj.pathname.split('/');
-        const fileName = pathParts.pop();
-        const filePath = path.join(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          'uploads',
-          fileName,
-        );
+        const encodedFileName = urlObj.pathname.split('/').pop() || '';
+        const fileName = decodeURIComponent(encodedFileName);
+        const filePath = path.join(process.cwd(), 'uploads', fileName || '');
 
         stat(filePath, (err) => {
           if (err) {
-            return reject({ fileName, message: 'Image not found' });
+            return reject({ fileName, message: 'File not found' });
           }
 
           unlink(filePath, (err) => {
             if (err) {
-              return reject({ fileName, message: 'Could not delete image' });
+              return reject({ fileName, message: 'Could not delete file' });
             }
-            resolve({ fileName, message: 'Image deleted successfully' });
+            resolve({ fileName, message: 'File deleted successfully' });
           });
         });
       });
@@ -49,10 +43,10 @@ export class UploadService {
         if (result.status === 'fulfilled') {
           return new BaseSuccessResponse({
             data: result.value,
-            message: 'Image deleted successfully',
+            message: 'File deleted successfully',
           });
         } else {
-          throw new InternalServerErrorException(result.reason);
+          throwInternalError(result.reason);
         }
       });
     });
