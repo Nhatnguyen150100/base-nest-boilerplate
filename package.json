@@ -19,15 +19,21 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration:generate": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/config/typeorm.config.ts ./src/database/migrations",
-    "migration:run": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/config/typeorm.config.ts",
-    "migration:create": "cd src/database/migrations && typeorm-ts-node-commonjs migration:create",
-    "migration:revert": "cd src/database/migrations && typeorm-ts-node-commonjs migration:revert",
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/config/typeorm.config.ts ./src/database/migrations/all-migration",
+    "migration:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/config/typeorm.config.ts",
+    "migration:create": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -d ./src/config/typeorm.config.ts",
+    "migration:revert": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/config/typeorm.config.ts",
+    "db:create": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs db:create -d src/config/typeorm.config.ts --initialDatabase mysql --synchronize no",
+    "db:drop": "bash scripts/drop-db.sh",
+    "seed:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs seed:run",
+    "seed:create": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs seed:create",
     "prepare": "husky",
     "lint-staged": "lint-staged",
-    "start:docker": "bash script/start.sh"
+    "start:docker": "bash scripts/start-docker.sh",
+    "reset:db": "bash scripts/reset-db.sh"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@nestjs/axios": "^4.0.0",
     "@nestjs/common": "^11.1.0",
     "@nestjs/config": "^4.0.2",
@@ -62,6 +68,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "typeorm": "0.3.20",
+    "typeorm-extension": "^3.7.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {

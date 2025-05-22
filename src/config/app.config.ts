@@ -4,6 +4,7 @@ import { join } from 'path';
 import { SnakeNamingStrategy } from '../snake-naming.strategy';
 import { DataSourceOptions } from 'typeorm';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { SeederOptions } from 'typeorm-extension';
 
 @Injectable()
 export class AppConfig {
@@ -64,10 +65,12 @@ export class AppConfig {
       join(__dirname, '../modules/**/*.view-entity{.ts,.js}'),
     ];
     const migrations = [join(__dirname, '../database/migrations/*{.ts,.js}')];
+    const seeds = [join(__dirname, '../database/seeds/*{.ts,.js}')];
 
-    const _config: DataSourceOptions = {
+    const _config: DataSourceOptions & SeederOptions = {
       entities,
       migrations,
+      seeds,
       dropSchema: this.isTest,
       type: this.getString('DB_TYPE') as 'mysql' | 'postgres',
       host: this.getString('DB_HOST'),
@@ -75,7 +78,7 @@ export class AppConfig {
       username: this.getString('DB_USERNAME'),
       password: this.getString('DB_PASSWORD'),
       database: this.getString('DB_DATABASE'),
-      migrationsRun: true,
+      migrationsRun: this.isDevelopment,
       synchronize: this.isDevelopment,
       logging: this.getBoolean('ENABLE_ORM_LOGS'),
       namingStrategy: new SnakeNamingStrategy(),
