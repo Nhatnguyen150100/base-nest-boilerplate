@@ -1,4 +1,4 @@
-# 🚀 Base NestJS Project &nbsp; ![NestJS](https://img.shields.io/badge/NestJS-Base%20Template-E0234E?logo=nestjs) ![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker) ![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-blue?logo=github-actions)
+# 🚀NestJS Boilerplate Project &nbsp; ![NestJS](https://img.shields.io/badge/NestJS-Base%20Template-E0234E?logo=nestjs) ![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker) ![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-blue?logo=github-actions)
 
 > 🏗️ **A modern, scalable, and secure NestJS boilerplate for enterprise-grade Node.js applications.**
 
