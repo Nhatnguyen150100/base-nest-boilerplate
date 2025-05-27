@@ -28,6 +28,7 @@ export class NonHttpExceptionFilter implements ExceptionFilter {
       message: 'Internal server error',
       statusCode: status,
     });
+    console.log('🚀 ~ NonHttpExceptionFilter ~ errorObj:', errorObj);
 
     response.status(status).json(errorObj);
   }

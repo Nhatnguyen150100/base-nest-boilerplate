@@ -19,6 +19,9 @@ import { GuardModule } from './modules/guard/guard.module';
 import { HealthModule } from './modules/health/health.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { UserModule } from './modules/user/user.module';
+import { RequestLoggerMiddleware } from './middlewares/request-logger.middleware';
+import { WinstonModule } from 'nest-winston';
+import { winstonLoggerOptions } from './loggers/winston.logger';
 dotenv.config();
 
 const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
@@ -32,9 +35,12 @@ const coreModule: (DynamicModule | Promise<DynamicModule>)[] = [
   }),
 ];
 
+const loggerModule = WinstonModule.forRoot(winstonLoggerOptions);
+
 @Module({
   imports: [
     ...coreModule,
+    loggerModule,
     SharedModule,
     DatabaseModule,
     AuthModule,
@@ -49,6 +55,8 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CsrfMiddleware)
-      .forRoutes({ path: '/', method: RequestMethod.ALL });
+      .forRoutes({ path: '/', method: RequestMethod.ALL })
+      .apply(RequestLoggerMiddleware)
+      .forRoutes('{*splat}');
   }
 }

@@ -44,6 +44,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message,
       statusCode: status,
     });
+    console.log('🚀 ~ HttpExceptionFilter ~ errorObj:', errorObj);
 
     response.status(status).json(errorObj);
   }
