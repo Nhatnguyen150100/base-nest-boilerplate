@@ -59,7 +59,7 @@ export class AppConfig {
     return this.get('typeormConfig') as TypeOrmModuleOptions;
   }
 
-  get typeOrmConfigDataSource(): DataSourceOptions {
+  get typeOrmConfigDataSource(): DataSourceOptions & SeederOptions {
     const entities = [
       join(__dirname, '../modules/**/*.entity{.ts,.js}'),
       join(__dirname, '../modules/**/*.view-entity{.ts,.js}'),

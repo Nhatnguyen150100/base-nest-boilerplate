@@ -8,8 +8,9 @@ dotenv.config();
 
 const config = new AppConfig(new ConfigService()).typeOrmConfigDataSource;
 
-export default registerAs('typeormConfig', () => config);
-export const AppDataSource = new DataSource(config as DataSourceOptions);
+export const typeormConfig = registerAs('typeormConfig', () => config);
+const AppDataSource = new DataSource(config as DataSourceOptions);
+export default AppDataSource;
 
 AppDataSource.initialize()
   .then(() => {

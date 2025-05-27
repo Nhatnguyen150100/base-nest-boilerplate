@@ -25,7 +25,7 @@
     "migration:revert": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/config/typeorm.config.ts",
     "db:create": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs db:create -d src/config/typeorm.config.ts --initialDatabase mysql --synchronize no",
     "db:drop": "bash scripts/drop-db.sh",
-    "seed:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs seed:run",
+    "seed:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d src/config/typeorm.config.ts",
     "seed:create": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs seed:create",
     "prepare": "husky",
     "lint-staged": "lint-staged",
