@@ -1,4 +1,11 @@
-import { Body, Controller, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiExtraModels } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from '@/modules/auth/dto';
@@ -19,6 +26,7 @@ export class AuthController {
     path: 'login',
     summary: 'Đăng nhập tài khoản',
   })
+  @HttpCode(HttpStatus.OK)
   login(@Body() userDto: CreateUserDto) {
     return this.authService.login(userDto);
   }

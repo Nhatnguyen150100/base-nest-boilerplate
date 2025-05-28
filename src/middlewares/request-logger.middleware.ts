@@ -20,14 +20,17 @@ export class RequestLoggerMiddleware implements NestMiddleware {
         statusCode ===
         getResponseObject(HttpStatus.OK || HttpStatus.CREATED).statusCode
       ) {
-        this.logger.info(`[${method}] ${originalUrl} ${statusCode} - ${ip}`);
+        this.logger.info(`[${method}] ${originalUrl} [${statusCode}] - ${ip}`);
       } else {
-        this.logger.error(`[${method}] ${originalUrl} ${statusCode} - ${ip}`, {
-          statusCode,
-          method,
-          url: originalUrl,
-          ip,
-        });
+        this.logger.error(
+          `[${method}] ${originalUrl} [${statusCode}] - ${ip}`,
+          {
+            statusCode,
+            method,
+            url: originalUrl,
+            ip,
+          },
+        );
       }
     });
 

@@ -22,25 +22,18 @@ export class AuthService {
   ) {}
 
   async register(userDto: CreateUserDto) {
-    try {
-      const isExistEmail = await this.userRepository.findByEmail(userDto.email);
-      if (isExistEmail) throwConflict('Email already exists');
+    const isExistEmail = await this.userRepository.findByEmail(userDto.email);
+    if (isExistEmail) throwConflict('Email already exists');
 
-      const newUserObj = this.userRepository.create(userDto);
-      const savedUser = await this.userRepository.save(newUserObj);
-      delete savedUser.password;
+    const newUserObj = this.userRepository.create(userDto);
+    const savedUser = await this.userRepository.save(newUserObj);
+    delete savedUser.password;
 
-      return new BaseSuccessResponse({
-        data: savedUser,
-        statusCode: HttpStatus.CREATED,
-        message: 'User registered successfully',
-      });
-    } catch (error: any) {
-      Logger.error(error.message);
-      return new BaseErrorResponse({
-        message: error.message,
-      });
-    }
+    return new BaseSuccessResponse({
+      data: savedUser,
+      statusCode: HttpStatus.CREATED,
+      message: 'User registered successfully',
+    });
   }
 
   async login(userDto: CreateUserDto) {
