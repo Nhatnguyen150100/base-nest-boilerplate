@@ -53,7 +53,7 @@ graph TD
 ### 1️⃣ Clone & Install Dependencies
 
 ```bash
-git clone https://github.com/your-org/base-nest.git
+git clone [https://github.com/your-org/base-nest.git](https://github.com/Nhatnguyen150100/Nestjs-boilerplate.git)
 cd base-nest
 pnpm install
 cp .env.example .env
@@ -65,7 +65,7 @@ cp .env.example .env
 pnpm start:dev
 ```
 
-Access Swagger: [http://localhost:3000/documentation](http://localhost:3000/documentation)
+Access Swagger: [http://localhost:8080/documentation](http://localhost:8080/documentation)
 
 ### 3️⃣ Run with Docker
 
@@ -119,7 +119,7 @@ pnpm test:cov       # Test coverage
 
 ## 📚 **Documentation & Swagger**
 
-- API Docs: [http://localhost:3000/documentation](http://localhost:3000/documentation)
+- API Docs: [http://localhost:8080/documentation](http://localhost:8080/documentation)
 
 ---
 
