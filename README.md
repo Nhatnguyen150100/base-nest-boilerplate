@@ -53,7 +53,7 @@ graph TD
 ### 1️⃣ Clone & Install Dependencies
 
 ```bash
-git clone [https://github.com/your-org/base-nest.git](https://github.com/Nhatnguyen150100/Nestjs-boilerplate.git)
+git clone https://github.com/Nhatnguyen150100/Nestjs-boilerplate.git
 cd base-nest
 pnpm install
 cp .env.example .env
