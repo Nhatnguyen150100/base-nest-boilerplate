@@ -18,6 +18,10 @@ export class AppConfig {
     return this.nodeEnv === 'production';
   }
 
+  get isStaging(): boolean {
+    return this.nodeEnv === 'staging';
+  }
+
   get isTest(): boolean {
     return this.nodeEnv === 'test';
   }
@@ -32,6 +36,16 @@ export class AppConfig {
       serverUrl: this.getString('BASE_SERVER_URL'),
       clientUrl: this.getString('BASE_CLIENT_URL'),
       apiPrefix: this.getString('API_PREFIX'),
+    };
+  }
+
+  get mailConfig() {
+    return {
+      mailFrom: this.getString('MAIL_FROM'),
+      host: this.getString('MAIL_HOST'),
+      port: this.getString('MAIL_PORT'),
+      username: this.getString('MAIL_USERNAME'),
+      password: this.getString('MAIL_PASSWORD'),
     };
   }
 
@@ -64,8 +78,10 @@ export class AppConfig {
       join(__dirname, '../modules/**/*.entity{.ts,.js}'),
       join(__dirname, '../modules/**/*.view-entity{.ts,.js}'),
     ];
-    const migrations = [join(__dirname, '../database/migrations/*{.ts,.js}')];
-    const seeds = [join(__dirname, '../database/seeds/*{.ts,.js}')];
+    const migrations = [
+      join(__dirname, '../database/migrations/**/*{.ts,.js}'),
+    ];
+    const seeds = [join(__dirname, '../database/seeds/**/*{.ts,.js}')];
 
     const _config: DataSourceOptions & SeederOptions = {
       entities,

@@ -1,27 +1,29 @@
-import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import * as bcryptjs from 'bcryptjs';
 import { TokenService } from '@/shared/services/token.service';
 import { CreateUserDto, UpdateUserDto } from '@/modules/auth/dto';
-import {
-  BaseErrorResponse,
-  BasePageResponse,
-  BaseSuccessResponse,
-} from '@/config';
-import { UserNotFoundException } from '@/exceptions';
+import { BasePageResponse, BaseSuccessResponse } from '@/config';
 import { throwBadRequest, throwConflict, throwUserNotFound } from '@/helpers';
 import { IUserReq } from '@/types';
 import { User } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
 import { PaginationDto } from '@/common/dto';
+import { MailService } from '@/shared/module/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly tokenService: TokenService,
     private readonly userRepository: UserRepository,
+    private readonly mailService: MailService,
   ) {}
 
   async register(userDto: CreateUserDto) {
+    await this.mailService.sendOtpEmail(
+      'nhatnguyen150100@gmail.com',
+      '123456',
+      'Nhất',
+    );
     const isExistEmail = await this.userRepository.findByEmail(userDto.email);
     if (isExistEmail) throwConflict('Email already exists');
 
