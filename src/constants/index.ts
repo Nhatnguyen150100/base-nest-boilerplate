@@ -3,3 +3,4 @@ export * from './order';
 export * from './role';
 export * from './tags-swagger';
 export * from './key-guard';
+export * from './user-status';

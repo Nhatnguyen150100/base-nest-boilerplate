@@ -18,7 +18,9 @@ export class HealthController {
     tags: [DEFINE_TAGS_NAME.HEALTH],
     path: '/',
     isPrivateRoute: false,
-    summary: 'Kiểm tra tình trạng của ứng dụng',
+    summary: 'Check the health of the application',
+    description:
+      'This endpoint checks the health of the application, including database and memory status.',
   })
   @HealthCheck()
   check() {

@@ -14,7 +14,9 @@ export class UserController {
     method: EHttpMethod.GET,
     tags: [DEFINE_TAGS_NAME.USER],
     path: '/me',
-    summary: 'Lấy thông tin của chính mình',
+    summary: 'Get current user profile',
+    description:
+      'This endpoint retrieves the profile of the currently authenticated user.',
   })
   getAllUser(@Req() req: any) {
     const user = req.user as IUserReq;
@@ -25,7 +27,8 @@ export class UserController {
     method: EHttpMethod.GET,
     tags: [DEFINE_TAGS_NAME.USER],
     path: '/all',
-    summary: 'Lấy danh sách tất cả người dùng (dành cho admin)',
+    summary: 'Get all users in the system (Admin only)',
+    description: 'This endpoint retrieves all users in the system.',
     queries: [
       {
         name: 'page',
@@ -52,28 +55,30 @@ export class UserController {
     method: EHttpMethod.PUT,
     tags: [DEFINE_TAGS_NAME.USER],
     path: '/update',
-    summary: 'Cập nhật thông tin người dùng',
+    summary: 'Update user profile',
+    description:
+      'This endpoint allows users to update their profile information.',
     body: {
       required: true,
-      description: 'Thông tin người dùng cần cập nhật',
+      description: 'Update user profile information',
       schema: {
         type: 'object',
         properties: {
           name: {
             type: 'string',
-            description: 'Tên người dùng',
+            description: 'Name of the user',
           },
           avatar: {
             type: 'string',
-            description: 'URL ảnh đại diện người dùng',
+            description: 'URL of the user avatar',
           },
           address: {
             type: 'string',
-            description: 'Địa chỉ người dùng',
+            description: 'Address of the user',
           },
           phoneNumber: {
             type: 'string',
-            description: 'Số điện thoại người dùng',
+            description: 'Phone number of the user',
           },
         },
       },

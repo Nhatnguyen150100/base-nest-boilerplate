@@ -1,4 +1,9 @@
-import { EmailField, PasswordField } from '@/decorators';
+import {
+  EmailField,
+  PasswordField,
+  StringField,
+  StringFieldOptional,
+} from '@/decorators';
 
 export class CreateUserDto {
   @EmailField({
@@ -6,6 +11,12 @@ export class CreateUserDto {
     description: 'Unique email address',
   })
   readonly email: string;
+
+  @StringFieldOptional({
+    example: 'User name',
+    description: 'Name of the user',
+  })
+  readonly name?: string;
 
   @PasswordField({
     description:

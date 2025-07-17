@@ -71,7 +71,7 @@ export class BaseSuccessResponse<T> extends BaseResponse<T> {
     message,
     statusCode,
   }: {
-    data: T;
+    data?: T;
     message: string;
     statusCode?: number;
   }) {

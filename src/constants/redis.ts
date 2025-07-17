@@ -1,0 +1,3 @@
+const DEFINE_DEFAULT_OTP = '111111';
+
+export { DEFINE_DEFAULT_OTP };

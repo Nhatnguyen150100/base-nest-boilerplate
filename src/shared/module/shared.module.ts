@@ -4,8 +4,9 @@ import { Global, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MyJwtModule } from './jwt.module';
 import { AppConfig } from '../../config/app.config';
-import { TokenService } from '../services/token.service';
 import { MailModule } from './mail/mail.module';
+import { TokenService } from '../services/token.service';
+import { RedisModule } from './redis/redis.module';
 
 const providers: Provider[] = [AppConfig, TokenService];
 
@@ -16,8 +17,9 @@ const providers: Provider[] = [AppConfig, TokenService];
     MyJwtModule.register(),
     ThrottleModule.register(),
     MailModule,
+    RedisModule,
   ],
   providers,
-  exports: [...providers, CqrsModule, ThrottleModule, MailModule],
+  exports: [...providers, CqrsModule, ThrottleModule, MailModule, RedisModule],
 })
 export class SharedModule {}

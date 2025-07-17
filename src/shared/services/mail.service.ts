@@ -2,9 +2,9 @@ import { AppConfig } from '@/config';
 import { Injectable, Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import path = require('path');
-import { MAIL_TEMPLATE_PATH } from './mail.constants';
 import * as fs from 'fs';
 import Handlebars = require('handlebars');
+import { MAIL_TEMPLATE_PATH } from '../module/mail/mail.constants';
 
 @Injectable()
 export class MailService {

@@ -18,17 +18,19 @@ export class UploadController {
     method: EHttpMethod.POST,
     tags: [DEFINE_TAGS_NAME.UPLOAD],
     path: '/',
-    summary: 'Tải lên 1 file',
+    summary: 'Upload a file',
+    description:
+      'This endpoint allows users to upload a file (image, document, etc.).',
     body: {
       required: true,
-      description: 'Form chứa file tải lên',
+      description: 'Upload file information',
       schema: {
         type: 'object',
         properties: {
           file: {
             type: 'string',
             format: 'binary',
-            description: 'Tệp hình ảnh (image, document...)',
+            description: 'File to upload (should be an image or document)',
           },
         },
       },
@@ -44,14 +46,16 @@ export class UploadController {
     method: EHttpMethod.DELETE,
     tags: [DEFINE_TAGS_NAME.UPLOAD],
     path: '/',
-    summary: 'Xóa nhiều file',
+    summary: 'Delete uploaded files',
+    description:
+      'This endpoint allows users to delete files that have been uploaded.',
     queries: [
       {
         name: 'urls',
         type: String,
         required: true,
         isArray: true,
-        description: 'Danh sách URL file cần xóa',
+        description: 'List of file URLs to delete',
         example: ['https://example.com/a.png', 'https://example.com/b.jpg'],
       },
     ],

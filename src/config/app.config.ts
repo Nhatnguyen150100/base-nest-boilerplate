@@ -39,6 +39,15 @@ export class AppConfig {
     };
   }
 
+  get redisConfig() {
+    return {
+      host: this.getString('REDIS_HOST'),
+      port: this.getNumber('REDIS_PORT'),
+      password: this.getString('REDIS_PASSWORD'),
+      db: this.getNumber('REDIS_DB'),
+    };
+  }
+
   get mailConfig() {
     return {
       mailFrom: this.getString('MAIL_FROM'),

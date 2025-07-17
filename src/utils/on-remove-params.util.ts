@@ -28,4 +28,4 @@ const onRemoveParams = (
   return handleRemoveNullUndefined(params);
 };
 
-export default onRemoveParams;
+export { onRemoveParams };

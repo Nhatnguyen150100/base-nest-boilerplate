@@ -10,19 +10,20 @@ const DEFINE_TAGS_NAME = {
 const DEFINE_TAGS: ITagsSwagger[] = [
   {
     name: DEFINE_TAGS_NAME.AUTH,
-    description: 'Các endpoint sử dụng để xác thực người dùng',
+    description: 'List endpoints related to authentication and user management',
   },
   {
     name: DEFINE_TAGS_NAME.UPLOAD,
-    description: 'Các endpoint sử dụng để upload file',
+    description: 'Endpoints for file upload and management',
   },
   {
     name: DEFINE_TAGS_NAME.HEALTH,
-    description: 'Các endpoint sử dụng để kiểm tra tình trạng của ứng dụng',
+    description: 'Endpoints to check the health of the application',
   },
   {
     name: DEFINE_TAGS_NAME.USER,
-    description: 'Các endpoint sử dụng để quản lý người dùng',
+    description:
+      'Endpoints for user management, including profile updates and user retrieval',
   },
 ];
 

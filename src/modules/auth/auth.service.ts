@@ -1,14 +1,19 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import * as bcryptjs from 'bcryptjs';
-import { TokenService } from '@/shared/services/token.service';
 import { CreateUserDto, UpdateUserDto } from '@/modules/auth/dto';
-import { BasePageResponse, BaseSuccessResponse } from '@/config';
+import { AppConfig, BasePageResponse, BaseSuccessResponse } from '@/config';
 import { throwBadRequest, throwConflict, throwUserNotFound } from '@/helpers';
 import { IUserReq } from '@/types';
 import { User } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
 import { PaginationDto } from '@/common/dto';
-import { MailService } from '@/shared/module/mail/mail.service';
+import { MailService } from '@/shared/services/mail.service';
+import { TokenService } from '@/shared/services/token.service';
+import { RedisService } from '@/shared/services/redis.service';
+import { generateOTP } from '@/utils';
+import { DEFINE_DEFAULT_OTP } from '@/constants/redis';
+import { EUserStatus } from '@/constants';
+import { VerifyOtpDto } from './dto/verify-otp.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,25 +21,109 @@ export class AuthService {
     private readonly tokenService: TokenService,
     private readonly userRepository: UserRepository,
     private readonly mailService: MailService,
+    private readonly appConfig: AppConfig,
+    private readonly redisService: RedisService,
   ) {}
 
   async register(userDto: CreateUserDto) {
-    await this.mailService.sendOtpEmail(
-      'nhatnguyen150100@gmail.com',
-      '123456',
-      'Nhất',
-    );
     const isExistEmail = await this.userRepository.findByEmail(userDto.email);
     if (isExistEmail) throwConflict('Email already exists');
 
+    const customOTP = this.appConfig.isDevelopment
+      ? DEFINE_DEFAULT_OTP
+      : generateOTP();
+
+    const redisClient = this.redisService.getClient();
+
+    /**
+     * Store OTP in Redis with a 3-minute expiration
+     */
+    await redisClient.set(userDto.email, customOTP, 'EX', 180);
+
+    const mailContent = {
+      to: userDto.email,
+      otp: customOTP,
+      name: userDto.name.toLocaleUpperCase(),
+    };
+
+    await this.mailService.sendOtpEmail(
+      mailContent.to,
+      mailContent.otp,
+      mailContent.name,
+    );
+
     const newUserObj = this.userRepository.create(userDto);
-    const savedUser = await this.userRepository.save(newUserObj);
-    delete savedUser.password;
+    await this.userRepository.save(newUserObj);
 
     return new BaseSuccessResponse({
-      data: savedUser,
+      message:
+        'User registered successfully. Please check your email for the OTP.',
+    });
+  }
+
+  async resendOtp(email: string) {
+    const user = await this.userRepository.findByEmail(email);
+    if (!user || user.status !== EUserStatus.INACTIVE) {
+      throwUserNotFound();
+    }
+
+    const customOTP = this.appConfig.isDevelopment
+      ? DEFINE_DEFAULT_OTP
+      : generateOTP();
+
+    const redisClient = this.redisService.getClient();
+
+    /**
+     * Store OTP in Redis with a 3-minute expiration
+     */
+    await redisClient.set(email, customOTP, 'EX', 180);
+
+    const mailContent = {
+      to: email,
+      otp: customOTP,
+      name: user.name,
+    };
+
+    await this.mailService.sendOtpEmail(
+      mailContent.to,
+      mailContent.otp,
+      mailContent.name,
+    );
+
+    return new BaseSuccessResponse({
+      message: 'Resend OTP successfully. Please check your email for the OTP.',
+    });
+  }
+
+  async verifyOtp(verifyDto: VerifyOtpDto) {
+    const { email, otp } = verifyDto;
+    const redisClient = this.redisService.getClient();
+    const storedOtp = await redisClient.get(email);
+
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      throwUserNotFound();
+    }
+
+    if (!storedOtp) {
+      throwBadRequest('OTP has expired or does not exist');
+    }
+
+    if (storedOtp !== otp) {
+      throwBadRequest('Invalid OTP. Please try again.');
+    }
+
+    user.status = EUserStatus.ACTIVE;
+    await this.userRepository.save(user);
+    delete user.password;
+
+    // Remove OTP from Redis after successful verification
+    await redisClient.del(email);
+
+    return new BaseSuccessResponse({
+      data: user,
+      message: 'Email verified successfully',
       statusCode: HttpStatus.CREATED,
-      message: 'User registered successfully',
     });
   }
 

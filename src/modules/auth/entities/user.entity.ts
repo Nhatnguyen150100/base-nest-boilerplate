@@ -6,7 +6,7 @@ import {
   PasswordField,
   StringField,
 } from '@/decorators';
-import { EUserRole } from '@/constants';
+import { EUserStatus, EUserRole } from '@/constants';
 import { BaseEntity } from '@/database/entities';
 
 @Entity('users')
@@ -51,6 +51,13 @@ export class User extends BaseEntity {
   })
   @EnumField(() => EUserRole)
   role: EUserRole;
+
+  @Column({
+    type: 'enum',
+    enum: EUserStatus,
+    default: EUserStatus.INACTIVE,
+  })
+  status: EUserStatus;
 
   @BeforeInsert()
   async hashPassword() {
