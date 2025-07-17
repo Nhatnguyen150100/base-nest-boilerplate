@@ -101,7 +101,7 @@ export class AuthService {
     const storedOtp = await redisClient.get(email);
 
     const user = await this.userRepository.findByEmail(email);
-    if (!user) {
+    if (!user || user.status !== EUserStatus.INACTIVE) {
       throwUserNotFound();
     }
 
@@ -133,10 +133,15 @@ export class AuthService {
       throwUserNotFound();
     }
 
+    if (userExit.status !== EUserStatus.ACTIVE) {
+      throwBadRequest('Your account is not active. Please verify your email.');
+    }
+
     const isMatchPassword = await this.comparePassword(
       userDto.password,
       userExit.password,
     );
+
     if (!isMatchPassword) {
       throwBadRequest('Password incorrect. Please try again!');
     }
