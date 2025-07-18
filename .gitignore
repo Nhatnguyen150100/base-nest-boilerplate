@@ -5,4 +5,5 @@ build/
 tmp/
 temp/
 .env
+.env.production
 src/logs

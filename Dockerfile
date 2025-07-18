@@ -28,7 +28,6 @@ COPY --from=prod_deps /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
-
 EXPOSE $PORT
 
 CMD ["node", "build/src/main"]
